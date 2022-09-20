@@ -8,7 +8,6 @@ from sklearn.pipeline import Pipeline
 from sklearn import model_selection
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import classification_report
-from sklearn.model_selection import cross_validate, train_test_split
 from sklearn.base import clone
 
 from moseq2_lda.data import MoseqRepresentations
@@ -18,15 +17,16 @@ Type specifying a `LinearDiscriminantAnalysis` instance or a `Pipeline` with a f
 '''
 LDAEstimator = Union[Pipeline, LinearDiscriminantAnalysis]
 
-def create_lda_pipeline(n_components: int=2, **kwargs) -> LDAEstimator:
+
+def create_lda_pipeline(**kwargs) -> LDAEstimator:
     ''' Create a default LDA pipeline
 
     Parameters:
-    n_components (int): number of components to model in the LDA analysis
     **kwargs: additional arguments to be passed to the constructor for class `LinearDiscriminantAnalysis`
     '''
+    n_components = kwargs.pop('n_components', 2)
     return Pipeline([
-        #('scalar', StandardScaler()),
+        # ('scalar', StandardScaler()),
         ('passthrough', 'passthrough'),
         ('lda', LinearDiscriminantAnalysis(n_components=n_components, solver='eigen', store_covariance=True, **kwargs))
     ])
@@ -76,7 +76,7 @@ class CrossValidationResult:
         ''' Get the mean of the scoring metric on the train dataset for each parameter value evaluated
         '''
         return np.mean(self.train_scores, axis=1)
-    
+
     @property
     def train_scores_std(self):
         ''' Get the standard deviation of the scoring metric on the train dataset for each parameter value evaluated
@@ -117,7 +117,6 @@ class CrossValidationResult:
             'std': self.test_scores_std[index]
         }
 
-
     @property
     def param_min(self):
         ''' Get the minimum parameter value that was evaluated
@@ -148,8 +147,8 @@ class CrossValidationResult:
         return joblib.load(path)
 
 
-
-def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, param_name: str, param_range: np.ndarray, cv=None, scoring='accuracy', n_jobs: int=-1) -> CrossValidationResult:
+def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, param_name: str, param_range: np.ndarray,
+                         cv=None, scoring='accuracy', n_jobs: int = -1) -> CrossValidationResult:
     ''' Run cross-validation to determine best model hyperparameter value
 
     Parameters:
@@ -175,9 +174,17 @@ def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, 
     estimators = []
     param_values = []
 
+    cv_kwargs = {
+        'cv': cv,
+        'scoring': scoring,
+        'n_jobs': n_jobs,
+        'return_train_score': True,
+        'return_estimator': True
+    }
+
     for param_value in param_range:
         estimator = set_estimator_params(estimator, **{param_name: param_value})
-        cv_results = cross_validate(estimator, X, Y, cv=cv, scoring=scoring, n_jobs=n_jobs, return_train_score=True, return_estimator=True)
+        cv_results = model_selection.cross_validate(estimator, X, Y, **cv_kwargs)
         param_values.append(param_value)
         test_scores.append(cv_results['test_score'])
         train_scores.append(cv_results['train_score'])
@@ -201,69 +208,27 @@ def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, 
 
     best = results.best
     best_val_str = best["param"] if isinstance(best["param"], str) else f'{best["param"]:0.2f}'
-    print(f'Best value for parameter "{param_name}" is {best_val_str}, ' \
-        + f'achieving a mean {scoring} of ~{best["mean"]:0.1%} ± {best["std"]:0.2%} (stdev) on cross-validated data')
+    print(f'Best value for parameter "{param_name}" is {best_val_str}')
+    print(f'Achieving a mean {scoring} of ~{best["mean"]:0.1%} ± {best["std"]:0.2%} (stdev) on cross-validated data')
 
-    # return estimator trained on full train dataset with best parameters identified via cross validation
     return results
 
 
-def train_lda_model(estimator, X, Y, split=None):
-    pass
-    # estimator.fit(X_train, y_train)
-    # test_preditions = estimator.predict(X_test)
-    # print('Below are performance metrics for estimator using best parameter trained on the entire training dataset and evaluated on held out test data (not used in cross-validation)')
-    # print(classification_report(y_true=y_test, y_pred=test_preditions))
+def train_lda_model(estimator, data: MoseqRepresentations, representation: str):
+    estimator.fit(data.data(representation), data.groups)
 
-
-
-
-def train_lda_pipeline(data: MoseqRepresentations, representation: str, lda_kwargs: dict=None):
-    X = getattr(data, representation)
-    Y = data.groups
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, stratify=Y)
-
-    if lda_kwargs is None:
-        lda_kwargs = {}
-
-    estimator = create_lda_pipeline(n_components=2, **lda_kwargs)
-
-    cv_results = run_cross_validation(estimator=estimator,
-                      X=X_train,
-                      Y=y_train,
-                      param_name='shrinkage',
-                      param_range=[*list(np.linspace(0, 1, 11, dtype=float)), 'auto'])
-
-    estimator = set_estimator_params(estimator, **{'shrinkage': cv_results.best["param"]})
-    estimator.fit(X_train, y_train)
-    test_preditions = estimator.predict(X_test)
-    print('Below are performance metrics for estimator using best parameter trained on the entire training dataset and evaluated on held out test data (not used in cross-validation)')
-    print(classification_report(y_true=y_test, y_pred=test_preditions))
-
-
-
-    return LdaPipelineResult(
-        data=data,
-        representation=representation,
-        cv_result=cv_results,
+    return LdaResult(
         estimator=estimator,
-        X_train=X_train,
-        X_test=X_test,
-        y_train=y_train,
-        y_test=y_test
+        data=data,
+        representation=representation
     )
 
 
 @dataclass
-class LdaPipelineResult:
+class LdaResult:
+    estimator: LDAEstimator
     data: MoseqRepresentations
     representation: str
-    cv_result: CrossValidationResult
-    estimator: LDAEstimator
-    X_train: np.ndarray
-    X_test: np.ndarray
-    y_train: np.ndarray
-    y_test: np.ndarray
 
     @property
     def lda(self):
@@ -272,3 +237,104 @@ class LdaPipelineResult:
         else:
             return self.estimator
 
+    def _get_data(self, data: MoseqRepresentations = None):
+        if data is not None:
+            x = data.data(self.representation)
+            y = data.groups
+        else:
+            x = self.data.data(self.representation)
+            y = self.data.groups
+
+        return x, y
+
+    def predict(self, data: MoseqRepresentations = None):
+        x, _ = self._get_data(data)
+        return self.lda.predict(x)
+
+    def transform(self, data: MoseqRepresentations = None):
+        x, _ = self._get_data(data)
+        return self.lda.transform(x)
+
+    def score(self, data: MoseqRepresentations = None):
+        x, y = self._get_data(data)
+        return self.lda.score(x, y)
+
+    def classification_report(self, data: MoseqRepresentations = None):
+        x, y = self._get_data(data)
+        p = self.lda.predict(x)
+        return classification_report(y_true=y, y_pred=p)
+
+    def save(self, dest: str):
+        ''' Save this LdaResult
+
+        Parameters:
+        dest (str): destination for the saved result
+        '''
+        joblib.dump(self, dest)
+
+    @classmethod
+    def load(cls, path: str) -> 'LdaResult':
+        ''' Load a LdaResult from a file
+
+        Parameters:
+        dest (str): destination for the saved result
+        '''
+        return joblib.load(path)
+
+
+def train_lda_pipeline(data: MoseqRepresentations, representation: str, holdout: int = 0.3, lda_kwargs: dict = None):
+    ''' This is a "batteries-included" method which performs the following procedure:
+        - split the representations into `test` and `train` subsets
+        - creates an LDA estimator
+        - run a cross-validated search (k-fold stratified CV) for the hyperparameter `shrinkage` using
+          only the `train` subset of the representations
+        - select the best hyperparameter value from the search, and then train the classifier using
+          the full `train` subset of the representations
+        - predict on the held-out `test` subsets and print a classification report
+        - construct and return a `LdaPipelineResult` object
+    '''
+
+    # Split data into train and test sets.
+    # Train will be used for CV and final model training
+    # Test will only be used for evaluation of the final model
+    train, test = data.split(holdout)
+
+    if lda_kwargs is None:
+        lda_kwargs = {}
+
+    # Create a LDA pipeline, passing along any kwargs the user supplied
+    estimator = create_lda_pipeline(**lda_kwargs)
+
+    # Run cross validation using the estimator
+    cv_results = run_cross_validation(estimator=estimator,
+                                      X=train.data(representation),
+                                      Y=train.groups,
+                                      param_name='shrinkage',
+                                      param_range=[*list(np.linspace(0, 1, 11, dtype=float)), 'auto'])
+
+    estimator = set_estimator_params(estimator, **{'shrinkage': cv_results.best["param"]})
+    final = train_lda_model(estimator, train, representation)
+    print('Below are performance metrics for estimator using best parameter trained on the entire training dataset '
+          'and evaluated on held out test data (not used in cross-validation)')
+    print(final.classification_report(test))
+
+    return LdaPipelineResult(
+        data=data,
+        representation=representation,
+        cv_result=cv_results,
+        final=final,
+        train=train,
+        test=test
+    )
+
+
+@dataclass
+class LdaPipelineResult:
+    ''' Class containing results from `train_lda_pipeline`
+    '''
+    data: MoseqRepresentations
+    representation: str
+    cv_result: CrossValidationResult
+    final: LdaResult
+    train: MoseqRepresentations
+    test: MoseqRepresentations

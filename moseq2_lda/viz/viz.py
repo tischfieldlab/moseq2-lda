@@ -1,26 +1,31 @@
-from typing import List
 from dataclasses import asdict
+from typing import List
 
 import pandas as pd
-from matplotlib import pyplot as plt
-from moseq2_lda.model import CrossValidationResult
-from sklearn.metrics import classification_report
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import permutation_test_score
 import seaborn as sns
+from matplotlib import pyplot as plt
+from moseq2_lda.data import MoseqRepresentations
+from moseq2_lda.model import CrossValidationResult, LdaResult
+from sklearn.model_selection import permutation_test_score
 
-class PlotAesthetics:
+
+class Aesthetics:
 
     default_palette = 'deep'
     marker_pool = ['o', 'v', '^', '<', '>', 's', 'p', 'P', 'D', 'X', '*', 'h', 'H', 'd']
 
-    def __init__(self, groups: List[str]):
-        self.groups = list(set(groups))
+    def __init__(self, groups: List[str], palette=None, markers=None):
+        self.groups = list(dict.fromkeys(groups))
         n_groups = len(self.groups)
-        self.palette = sns.color_palette(self.default_palette, n_colors=n_groups)
-        self.markers = [self.marker_pool[i % len(self.marker_pool)] for i in range(n_groups)]
 
+        if palette is None:
+            palette = self.default_palette
+        self.palette = sns.color_palette(palette, n_colors=n_groups)
 
+        if markers is None:
+            self.markers = [self.marker_pool[i % len(self.marker_pool)] for i in range(n_groups)]
+        else:
+            self.markers = markers
 
 
 def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
@@ -31,7 +36,7 @@ def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
     ax.set_xlabel(cv_result.param_name)
     ax.set_ylabel(f'Mean {cv_result.scoring}')
     ax.set_ylim(0.0, 1.1)
-    #ax.set_xlim(cv_result.param_min, cv_result.param_max)
+    # ax.set_xlim(cv_result.param_min, cv_result.param_max)
     ax.plot(cv_result.param_range, cv_result.train_scores_mean, label='Training score ± stdev', color='darkorange')
     ax.fill_between(
         range(len(cv_result.param_range)),
@@ -65,42 +70,36 @@ def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
     return ax
 
 
-
-def plot_lda_results(lda, data, meta_vals, group_vals, groups, palette, markers, title="LDA", figsize=(25, 20), relative_weights=None):
+def plot_lda_results(lda: LdaResult, data: MoseqRepresentations, aes: Aesthetics = None, title="LDA",
+                     figsize=(25, 20), relative_weights=None):
 
     lda_result = lda.transform(data)
     lda_predictions = lda.predict(data)
-    
-    if isinstance(lda, Pipeline):
-        lda_ = lda[-1]
-    else:
-        lda_ = lda
 
-
-    print('LDA Score: {}'.format(lda.score(data, group_vals)))
-    print('LDA Explained Variance: {}'.format(lda_.explained_variance_ratio_))
-    print(classification_report(y_true=group_vals, y_pred=lda_predictions))
+    print('LDA Score: {}'.format(lda.score(data)))
+    print('LDA Explained Variance: {}'.format(lda.lda.explained_variance_ratio_))
+    print(lda.classification_report(data))
 
     out_data = []
-    for i in range(len(group_vals)):
+    for i, m in enumerate(data.meta):
         out_data.append({
-            **asdict(meta_vals[i]),
-            'group': group_vals[i],
+            **asdict(m),
             'predicted_group': lda_predictions[i],
-            **{f'LDA_{d+1}': lda_result[i, d] for d in range(lda_.n_components)}
+            **{f'LDA_{d+1}': lda_result[i, d] for d in range(lda.lda.n_components)}
         })
     out_data = pd.DataFrame(out_data)
 
-
-    if lda_.n_components == 2:
+    if lda.lda.n_components == 2:
         from .viz2d import plot_lda_results_2D
-        fig, axs = plot_lda_results_2D(lda_, lda_result, lda_predictions, group_vals, groups, palette, markers, title, figsize, relative_weights)
-    elif lda_.n_components == 3:
+        fig, axs = plot_lda_results_2D(lda.lda, lda_result, lda_predictions, data.groups, aes=aes, title=title, figsize=figsize,
+                                       relative_weights=relative_weights)
+    elif lda.lda.n_components == 3:
         from .viz3d import plot_lda_kde_projections_3D, plot_lda_results_3D
-        fig, axs = plot_lda_results_3D(lda_, lda_result, lda_predictions, group_vals, groups, palette, markers, title, figsize, relative_weights)
-        plot_lda_kde_projections_3D(axs, lda_result, groups, group_vals, palette)
+        fig, axs = plot_lda_results_3D(lda.lda, lda_result, lda_predictions, data.groups, aes=aes, title=title, figsize=figsize,
+                                       relative_weights=relative_weights)
+        plot_lda_kde_projections_3D(axs, lda_result, data.groups, aes=aes)
     else:
-        raise ValueError(f'unsupported `n_components` of {lda_.n_components}; only 2-3 components allowed!')
+        raise ValueError(f'unsupported `n_components` of {lda.lda.n_components}; only 2-3 components allowed!')
 
     return fig, axs, out_data
 
