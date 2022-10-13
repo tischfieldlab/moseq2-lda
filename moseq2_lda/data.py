@@ -66,21 +66,22 @@ class MoseqRepresentations:
         for cls in self.classes:
             print(f'{gcounts[cls]} {cls}')
 
+    def split(self, test_size: float=0.3, seed: Union[int, np.random.RandomState, None]=None):
         ''' Split this dataset into test and train subsets, in a stratified manner
 
         Parameters:
-        k_fold (int): number of folds to split
-        shuffle (bool): Whether to shuffle each classes samples before splitting
+        test_size (int): percentage of data to be used in the test subset, `1 - test_size` will be used for the train subset
         seed (int|RandomState|None): when shuffle is True, affects the ordering of samples
+
+        Returns:
+        Tuple[MoseqRepresentations, MoseqRepresentations] - train and test subsets, respectively
         '''
-        # split = model_selection.StratifiedKFold(n_splits=k_fold, shuffle=shuffle, random_state=seed)
         train_idx, test_idx, train_groups, test_groups = model_selection.train_test_split(np.arange(self.n_samples),
                                                                      self.groups,
                                                                      test_size=test_size,
-                                                                     stratify=self.groups)
-
-        # train_idx, test_idx = next(split.split(X=np.arange(self.n_samples), y=self.groups))
-        print(train_idx, test_idx)
+                                                                     stratify=self.groups,
+                                                                     shuffle=True,
+                                                                     random_state=seed)
 
         for idx, g in zip(train_idx, train_groups):
             if self.meta[idx].group != g:
