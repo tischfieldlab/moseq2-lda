@@ -10,6 +10,7 @@ setup(
     name="moseq2-lda",
     license="MIT License",
     install_requires=[
+        "dataclasses",
         "numpy",
         "scipy",
         "pandas",
