@@ -1,6 +1,7 @@
 from collections import Counter
-from typing import Dict, List, Union
 from dataclasses import dataclass
+from typing import Dict, List, Union
+from typing_extensions import Literal
 
 import numpy as np
 from moseq2_viz.model.util import (get_syllable_statistics,
@@ -22,6 +23,8 @@ class MoseqSampleMetadata:
     ApparatusName: str
 
 
+RepresentationType = Literal['usages', 'frames', 'trans']
+
 @dataclass
 class MoseqRepresentations:
     ''' Contains various representations of moseq data
@@ -31,7 +34,7 @@ class MoseqRepresentations:
     frames: np.ndarray
     trans: np.ndarray
 
-    def data(self, representation: Union['usages', 'frames', 'trans']) -> np.ndarray:
+    def data(self, representation: RepresentationType) -> np.ndarray:
         return getattr(self, representation)
 
     @property
@@ -100,7 +103,6 @@ class MoseqRepresentations:
             frames=self.frames[test_idx, :],
             trans=self.trans[test_idx, :]
         )
-        print(train.groups, test.groups)
 
         return train, test
 
