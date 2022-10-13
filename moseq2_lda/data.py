@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import Dict, List, Union
 from dataclasses import dataclass
 
@@ -52,7 +53,19 @@ class MoseqRepresentations:
         ''' Gets an array of uuids for each sample in the dataset '''
         return np.array([m.uuid for m in self.meta])
 
-    def split(self, test_size=0.3, shuffle=False, seed=None):
+    def describe(self):
+        ''' Describe the data within this instance
+        '''
+        print(f'{self.usages.shape[1]} modules in usages')
+        print(f'{self.frames.shape[1]} modules in frames')
+        print(f'{self.trans.shape[1]} transitions in trans')
+        print()
+
+        gcounts = Counter(self.groups)
+        print(f'Breakdown of {self.n_samples} samples across {len(self.classes)} classes:')
+        for cls in self.classes:
+            print(f'{gcounts[cls]} {cls}')
+
         ''' Split this dataset into test and train subsets, in a stratified manner
 
         Parameters:
