@@ -25,6 +25,7 @@ class MoseqSampleMetadata:
 
 RepresentationType = Literal['usages', 'frames', 'trans']
 
+
 @dataclass
 class MoseqRepresentations:
     ''' Contains various representations of moseq data
@@ -69,7 +70,7 @@ class MoseqRepresentations:
         for cls in self.classes:
             print(f'{gcounts[cls]} {cls}')
 
-    def split(self, test_size: float=0.3, seed: Union[int, np.random.RandomState, None]=None):
+    def split(self, test_size: float = 0.3, seed: Union[int, np.random.RandomState, None] = None):
         ''' Split this dataset into test and train subsets, in a stratified manner
 
         Parameters:
@@ -80,15 +81,15 @@ class MoseqRepresentations:
         Tuple[MoseqRepresentations, MoseqRepresentations] - train and test subsets, respectively
         '''
         train_idx, test_idx, train_groups, test_groups = model_selection.train_test_split(np.arange(self.n_samples),
-                                                                     self.groups,
-                                                                     test_size=test_size,
-                                                                     stratify=self.groups,
-                                                                     shuffle=True,
-                                                                     random_state=seed)
+                                                                                          self.groups,
+                                                                                          test_size=test_size,
+                                                                                          stratify=self.groups,
+                                                                                          shuffle=True,
+                                                                                          random_state=seed)
 
         for idx, g in zip(train_idx, train_groups):
             if self.meta[idx].group != g:
-                raise(f'{self.meta[idx].group}, {g}, {idx}')
+                raise ValueError(f'{self.meta[idx].group}, {g}, {idx}')
 
         train = MoseqRepresentations(
             meta=[self.meta[i] for i in train_idx],
