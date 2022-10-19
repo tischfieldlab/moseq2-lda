@@ -56,7 +56,10 @@ def _arrow3D(ax, x, y, z, dx, dy, dz, *args, **kwargs):
 setattr(Axes3D, 'arrow3D', _arrow3D)
 
 
-def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics, levels=5, alpha=0.5):
+def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics = None, levels: int = 5, alpha: float = 0.5):
+    if aes is None:
+        aes = Aesthetics(group_vals)
+
     minx, maxx = ax.get_xlim()
     miny, maxy = ax.get_ylim()
     minz, maxz = ax.get_zlim()
@@ -84,7 +87,7 @@ def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics
     ax.set_zlim((minz, maxz))
 
 
-def plot_lda_kde_projections_3D_iso(ax, lda_result, group_vals, aes: Aesthetics, levels=5, alpha=0.5):
+def plot_lda_kde_projections_3D_iso(ax, lda_result, group_vals, aes: Aesthetics, levels: int = 5, alpha: float = 0.5):
     minx, maxx = ax.get_xlim()
     miny, maxy = ax.get_ylim()
     minz, maxz = ax.get_zlim()
@@ -107,7 +110,11 @@ def plot_lda_kde_projections_3D_iso(ax, lda_result, group_vals, aes: Aesthetics,
     ax.set_zlim((minz, maxz))
 
 
-def plot_lda_results_3D(coeff, lda_result, lda_predictions, group_vals, aes: Aesthetics, title, figsize, relative_weights):
+def plot_lda_results_3D(coeff, lda_result, lda_predictions, group_vals, title, figsize, relative_weights, aes: Aesthetics = None):
+
+    if aes is None:
+        aes = Aesthetics(group_vals)
+
     lgd_itms = [mpl.lines.Line2D([0], [0], linestyle="none", c=c, marker=m) for c, m in zip(aes.palette, aes.markers)]
 
     fig = plt.figure(figsize=figsize)

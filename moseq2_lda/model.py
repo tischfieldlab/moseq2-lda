@@ -10,7 +10,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import classification_report
 from sklearn.base import clone
 
-from moseq2_lda.data import MoseqRepresentations
+from moseq2_lda.data import MoseqRepresentations, RepresentationType
 
 '''
 Type specifying a `LinearDiscriminantAnalysis` instance or a `Pipeline` with a final step of type `LinearDiscriminantAnalysis`
@@ -50,7 +50,7 @@ class CrossValidationResult:
     ''' Base Estimator '''
     base_estimator: LDAEstimator
 
-    ''' scoring metric used for result calculations '''
+    ''' Scoring metric used for result calculations '''
     scoring: str
     ''' Name of the parameter which was evaluated '''
     param_name: str
@@ -214,7 +214,7 @@ def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, 
     return results
 
 
-def train_lda_model(estimator, data: MoseqRepresentations, representation: str):
+def train_lda_model(estimator: LDAEstimator, data: MoseqRepresentations, representation: RepresentationType):
     estimator.fit(data.data(representation), data.groups)
 
     return LdaResult(
@@ -228,7 +228,7 @@ def train_lda_model(estimator, data: MoseqRepresentations, representation: str):
 class LdaResult:
     estimator: LDAEstimator
     data: MoseqRepresentations
-    representation: str
+    representation: RepresentationType
 
     @property
     def lda(self):
@@ -282,7 +282,7 @@ class LdaResult:
         return joblib.load(path)
 
 
-def train_lda_pipeline(data: MoseqRepresentations, representation: str, holdout: int = 0.3, lda_kwargs: dict = None):
+def train_lda_pipeline(data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: dict = None):
     ''' This is a "batteries-included" method which performs the following procedure:
         - split the representations into `test` and `train` subsets
         - creates an LDA estimator

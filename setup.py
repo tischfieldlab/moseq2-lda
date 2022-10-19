@@ -1,9 +1,5 @@
 from distutils.core import setup
-from distutils.util import convert_path
 import setuptools
-import os
-from pathlib import Path
-
 
 
 setup(
@@ -25,6 +21,6 @@ setup(
     description="Updated version of moseq2 with graphs and table",
     packages=setuptools.find_packages(),
     include_package_data=True,
-    #entry_points={"console_scripts": scripts, },
+    # entry_points={"console_scripts": scripts, },
     zip_safe=False,
 )

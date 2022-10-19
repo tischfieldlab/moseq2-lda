@@ -14,6 +14,7 @@ def compute_kde(data, mask, a1, a2, extents, res=100j):
 
     return xx, yy, f
 
+
 def compute_3D_kde(data, mask, extents, res=100j):
     if extents is None:
         xx, yy, zz = np.mgrid[

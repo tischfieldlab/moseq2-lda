@@ -1,5 +1,5 @@
 from dataclasses import asdict
-from typing import List
+from typing import ClassVar, List
 
 import pandas as pd
 import seaborn as sns
@@ -11,8 +11,8 @@ from sklearn.model_selection import permutation_test_score
 
 class Aesthetics:
 
-    default_palette = 'deep'
-    marker_pool = ['o', 'v', '^', '<', '>', 's', 'p', 'P', 'D', 'X', '*', 'h', 'H', 'd']
+    default_palette: ClassVar[str] = 'deep'
+    marker_pool: ClassVar[List[str]] = ['o', 'v', '^', '<', '>', 's', 'p', 'P', 'D', 'X', '*', 'h', 'H', 'd']
 
     def __init__(self, groups: List[str], palette=None, markers=None):
         self.groups = list(dict.fromkeys(groups))
@@ -67,7 +67,7 @@ def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
 
     ax.legend(loc='best')
 
-    return ax
+    return fig, ax
 
 
 def plot_lda_results(lda: LdaResult, data: MoseqRepresentations, aes: Aesthetics = None, title="LDA",
@@ -120,4 +120,8 @@ def plot_permutation_score(lda, X, y, cv=None, n_permutations=1000, ax=None):
 
     ax.legend(loc='best')
 
-    return ax
+    return fig, ax
+
+
+def save_figure(fig, dest, format):
+    pass

@@ -11,34 +11,55 @@ from sklearn import model_selection
 from tqdm import tqdm
 
 
-@dataclass
+@dataclass(frozen=True)
 class MoseqSampleMetadata:
-    ''' Metadata for a single sample
+    ''' Dataclass storing metadata for a single sample
     '''
+
+    ''' Unique identifier for this sample '''
     uuid: str
+    ''' Group to which this sample belongs '''
     group: str
+    ''' Session Name given to this sample '''
     SessionName: str
+    ''' Subject Name given to this sample '''
     SubjectName: str
+    ''' Date and time at which this sample's raw data was collected '''
     StartTime: str
+    ''' Name of the apparatus in which this sample's raw data was collected'''
     ApparatusName: str
 
 
 RepresentationType = Literal['usages', 'frames', 'trans']
 
-@dataclass
+
+@dataclass(frozen=True)
 class MoseqRepresentations:
     ''' Contains various representations of moseq data
     '''
+    ''' Collection of metadata associated with the moseq data'''
     meta: List[MoseqSampleMetadata]
+    ''' Usages representation (relative emission rates), of shape (nsamples, nmodules) '''
     usages: np.ndarray
+    ''' frames representation (relative frame counts), of shape (nsamples, nmodules) '''
     frames: np.ndarray
+    ''' Transitions (bigram normalized transition probabilities), of shape (nsamples, ntransitions) '''
     trans: np.ndarray
 
     def data(self, representation: RepresentationType) -> np.ndarray:
+        ''' Gets the data for a given representation
+
+        Parameters:
+        representation (RepresentationType): Type of representation to yield
+
+        Returns:
+        np.ndarray - numpy array containing data of the requested representation type
+        '''
         return getattr(self, representation)
 
     @property
     def n_samples(self):
+        ''' Gets the number of samples in this dataset'''
         return len(self.meta)
 
     @property
@@ -56,20 +77,35 @@ class MoseqRepresentations:
         ''' Gets an array of uuids for each sample in the dataset '''
         return np.array([m.uuid for m in self.meta])
 
-    def describe(self):
+    def describe(self, as_str: bool = False) -> Union[str, None]:
         ''' Describe the data within this instance
+
+        Parameters:
+        as_str (bool): if True, return the description as a string, otherwise print to stdout
+
+        Returns:
+        None if `as_str` is False, otherwise the description as a string
         '''
-        print(f'{self.usages.shape[1]} modules in usages')
-        print(f'{self.frames.shape[1]} modules in frames')
-        print(f'{self.trans.shape[1]} transitions in trans')
-        print()
+        buffer = ''
+        buffer += f'{self.usages.shape[1]} modules in usages\n'
+        buffer += f'{self.frames.shape[1]} modules in frames\n'
+        buffer += f'{self.trans.shape[1]} transitions in trans\n'
+        buffer += '\n'
 
         gcounts = Counter(self.groups)
-        print(f'Breakdown of {self.n_samples} samples across {len(self.classes)} classes:')
+        buffer += f'Breakdown of {self.n_samples} samples across {len(self.classes)} classes:\n'
         for cls in self.classes:
-            print(f'{gcounts[cls]} {cls}')
+            buffer += f'{gcounts[cls]} {cls}\n'
 
-    def split(self, test_size: float=0.3, seed: Union[int, np.random.RandomState, None]=None):
+        buffer += '\n'
+
+        if as_str:
+            return buffer
+        else:
+            print(buffer)
+            return None
+
+    def split(self, test_size: float = 0.3, seed: Union[int, np.random.RandomState, None] = None):
         ''' Split this dataset into test and train subsets, in a stratified manner
 
         Parameters:
@@ -80,16 +116,23 @@ class MoseqRepresentations:
         Tuple[MoseqRepresentations, MoseqRepresentations] - train and test subsets, respectively
         '''
         train_idx, test_idx, train_groups, test_groups = model_selection.train_test_split(np.arange(self.n_samples),
-                                                                     self.groups,
-                                                                     test_size=test_size,
-                                                                     stratify=self.groups,
-                                                                     shuffle=True,
-                                                                     random_state=seed)
+                                                                                          self.groups,
+                                                                                          test_size=test_size,
+                                                                                          stratify=self.groups,
+                                                                                          shuffle=True,
+                                                                                          random_state=seed)
 
+        # sanity check: make sure groups match in train subset
         for idx, g in zip(train_idx, train_groups):
             if self.meta[idx].group != g:
-                raise(f'{self.meta[idx].group}, {g}, {idx}')
+                raise ValueError(f'Failed train grouping sanity check: {self.meta[idx].group}, {g}, {idx}')
 
+        # sanity check: make sure groups match in test subset
+        for idx, g in zip(test_idx, test_groups):
+            if self.meta[idx].group != g:
+                raise ValueError(f'Failed train grouping sanity check: {self.meta[idx].group}, {g}, {idx}')
+
+        # build the train subset
         train = MoseqRepresentations(
             meta=[self.meta[i] for i in train_idx],
             usages=self.usages[train_idx, :],
@@ -97,6 +140,7 @@ class MoseqRepresentations:
             trans=self.trans[train_idx, :]
         )
 
+        # build the test subset
         test = MoseqRepresentations(
             meta=[self.meta[i] for i in test_idx],
             usages=self.usages[test_idx, :],
@@ -104,6 +148,7 @@ class MoseqRepresentations:
             trans=self.trans[test_idx, :]
         )
 
+        # return train and test subsets of this data
         return train, test
 
 
@@ -171,17 +216,17 @@ def load_representations(index_file: str, model_file: str, max_syllable: int = 1
             f_vals = np.array(list(f.values()))[:max_syllable+1]
             frames_vals.append(f_vals / np.sum(f_vals))
 
-    tm_vals = np.array(tm_vals)
+    tm_vals_np = np.array(tm_vals)
     if prune_trans:
-        never_used_transitions = np.all(tm_vals == 0, axis=0)
+        never_used_transitions = np.all(tm_vals_np == 0, axis=0)
         print(f'pruned {np.count_nonzero(never_used_transitions)} transitions which are never used')
-        tm_vals = tm_vals[:, ~never_used_transitions]
+        tm_vals_np = tm_vals_np[:, ~never_used_transitions]
 
     return MoseqRepresentations(
         meta=metadata_vals,
         usages=np.array(usage_vals),
         frames=np.array(frames_vals),
-        trans=tm_vals
+        trans=tm_vals_np
     )
 
 
