@@ -13,10 +13,10 @@ on:
   push:
     branches:
       - master
-    paths:
-      - "moseq2_lda/**"
-      - "tests/**"
-      - ".github/workflows/ci.yml"
+#    paths:
+#      - "moseq2_lda/**"
+#      - "tests/**"
+#      - ".github/workflows/ci.yml"
 #      - "environment.yml"
 #      - "setup.cfg"
 
