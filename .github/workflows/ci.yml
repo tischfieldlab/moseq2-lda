@@ -66,19 +66,22 @@ jobs:
         pip install --editable moseq2-lda[dev]
 
     - name: Run flake8
+      working-directory: moseq2-lda
       run: |
-        flake8 moseq2-lda
+        flake8
+
 #    - name: Run Black
 #      run: |
 #        black --check moseq2_lda tests
-    
+
 #    - name: Run pydocstyle
 #      run: |
 #        pydocstyle --convention=google moseq2_lda/
 
     - name: Run MyPy
+      working-directory: moseq2-lda
       run: |
-        mypy --follow-imports=skip --ignore-missing-imports moseq2-lda/moseq2_lda moseq2-lda/tests
+        mypy --follow-imports=skip --ignore-missing-imports moseq2_lda tests
 
   # # Tests with pytest
   # tests:
