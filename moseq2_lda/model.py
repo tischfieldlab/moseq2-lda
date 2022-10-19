@@ -1,6 +1,6 @@
 
 
-from typing import List, Union
+from typing import Any, Iterable, List, Union
 from dataclasses import dataclass
 import joblib
 import numpy as np
@@ -99,13 +99,13 @@ class CrossValidationResult:
     def best(self) -> dict:
         ''' Get a dict describing the best model parameter value
         '''
-        return self.model_info(np.nanargmax(self.test_scores_mean))
+        return self.model_info(int(np.nanargmax(self.test_scores_mean)))
 
     @property
     def worst(self) -> dict:
         ''' Get a dict describing the worst model parameter value
         '''
-        return self.model_info(np.nanargmin(self.test_scores_mean))
+        return self.model_info(int(np.nanargmin(self.test_scores_mean)))
 
     def model_info(self, index: int) -> dict:
         ''' Get a dict describing the a particular model parameter value
@@ -147,7 +147,7 @@ class CrossValidationResult:
         return joblib.load(path)
 
 
-def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, param_name: str, param_range: np.ndarray,
+def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, param_name: str, param_range: Iterable[Any],
                          cv=None, scoring='accuracy', n_jobs: int = -1) -> CrossValidationResult:
     ''' Run cross-validation to determine best model hyperparameter value
 
