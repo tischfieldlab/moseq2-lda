@@ -50,8 +50,16 @@ jobs:
       with:
         python-version: 3.9
 
+    - name: Checkout Viz
+      uses: actions/checkout@v2
+      with:
+        path: ./repos/viz
+        token: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
+        repository: tischfieldlab/moseq2-viz
+
     - name: Install dependencies
       run: |
+        pip install -e ./repos/viz
         pip install --editable .[dev]
 
     - name: Run flake8
