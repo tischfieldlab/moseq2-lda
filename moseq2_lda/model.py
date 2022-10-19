@@ -337,3 +337,20 @@ class LdaPipelineResult:
     final: LdaResult
     train: MoseqRepresentations
     test: MoseqRepresentations
+
+    def save(self, dest: str):
+        ''' Save this LdaPipelineResult
+
+        Parameters:
+        dest (str): destination for the saved result
+        '''
+        joblib.dump(self, dest)
+
+    @classmethod
+    def load(cls, path: str) -> 'LdaPipelineResult':
+        ''' Load a LdaPipelineResult from a file
+
+        Parameters:
+        dest (str): destination for the saved result
+        '''
+        return joblib.load(path)
