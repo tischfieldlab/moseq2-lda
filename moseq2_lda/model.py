@@ -1,6 +1,4 @@
-
-
-from typing import Any, Iterable, List, Union
+from typing import List, Sequence, Union
 from dataclasses import dataclass
 import joblib
 import numpy as np
@@ -55,7 +53,7 @@ class CrossValidationResult:
     ''' Name of the parameter which was evaluated '''
     param_name: str
     ''' Unique values considered for parameter `param_name` '''
-    param_range: np.ndarray
+    param_range: Sequence[Union[str, int, float]]
     ''' Parameters evaluated (`cardinality == test_scores`) '''
     param_values: np.ndarray
     ''' Test scores for each model evaluated '''
@@ -147,8 +145,9 @@ class CrossValidationResult:
         return joblib.load(path)
 
 
-def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, param_name: str, param_range: Iterable[Any],
-                         cv=None, scoring='accuracy', n_jobs: int = -1) -> CrossValidationResult:
+def run_cross_validation(estimator: LDAEstimator, X: np.ndarray, Y: np.ndarray, param_name: str,
+                         param_range: Sequence[Union[str, int, float]], cv=None, scoring='accuracy',
+                         n_jobs: int = -1) -> CrossValidationResult:
     ''' Run cross-validation to determine best model hyperparameter value
 
     Parameters:
