@@ -33,7 +33,7 @@ def create_notebook(dest):
 @click.option('--name', type=str, default='moseq-lda-analysis', help='basename prefix of output files')
 def analyze(model_file, index_file, max_syllable, group, representation, holdout, dim, dest_dir, name):
     ''' Analyze moseq data via LDA
-    
+
     \b
     This is a "batteries-included" method which performs the following procedure:
     - split the representations into `test` and `train` subsets
@@ -48,7 +48,7 @@ def analyze(model_file, index_file, max_syllable, group, representation, holdout
     Outputs:
     - Pickled `LDAPipelineResult` suitable for later loading via `LDAPipelineResult.load()`
     - Plot of the cross-validated hyperparameter search results (png and pdf formats)
-    - Plot of LDA results (projections, confusion matrix, table of projections) against 
+    - Plot of LDA results (projections, confusion matrix, table of projections) against
         all data using final model trained from CV
     - Perform and plot permutation test with the final model
     - Classification reports
