@@ -1,8 +1,10 @@
 import click
 import os
 
+import numpy as np
+
 from moseq2_lda.data import load_representations
-from moseq2_lda.model import train_lda_pipeline
+from moseq2_lda.model import create_lda_pipeline, run_cross_validation, train_lda_model, train_lda_pipeline
 from moseq2_lda.viz import Aesthetics, plot_validation_curve, plot_lda_results, plot_permutation_score
 
 
@@ -19,6 +21,48 @@ def cli():
 @click.argument('dest', required=True, type=click.Path(exists=False))
 def create_notebook(dest):
     pass
+
+
+@cli.command(name='cross-validate', short_help='Run hyperparameter search')
+@click.argument('model_file')
+@click.argument('index_file')
+@click.option('--max-syllable', default=100, help='maximum syllable to consider')
+@click.option('--group', type=str, multiple=True, default=None)
+@click.option('--representation', type=click.Choice(['usages', 'frames', 'trans']), default='usages')
+@click.option('--holdout', default=0.3, help='fraction of the data to hold out for testing')
+@click.option('--dim', default=2, help='number of dimentions for the LDA model')
+@click.option('--dest-dir', type=click.Path(), help='Directory where results will be saved')
+@click.option('--name', type=str, default='moseq-lda-analysis', help='basename prefix of output files')
+def cross_validate(model_file, index_file, max_syllable, group, representation, holdout, dim, dest_dir, name):
+    # make sure destination directory exists
+    os.makedirs(dest_dir, exist_ok=True)
+    name = f'{name}.{representation}'
+
+    representations = load_representations(index_file, model_file, max_syllable=max_syllable, groups=group)
+    representations.describe()
+
+    # Split data into train and test sets.
+    # Train will be used for CV and final model training
+    # Test will only be used for evaluation of the final model
+    train, test = representations.split(holdout)
+
+    # Create a LDA pipeline, passing along any kwargs the user supplied
+    estimator = create_lda_pipeline(**{
+        'n_components': dim
+    })
+
+    # Run cross validation using the estimator
+    cv_results = run_cross_validation(estimator=estimator,
+                                      X=train.data(representation),
+                                      Y=train.groups,
+                                      param_name='shrinkage',
+                                      param_range=[*list(np.linspace(0, 1, 11, dtype=float)), 'auto'])
+
+    cv_results.save(os.path.join(dest_dir, f'{name}.cross_validation_results.p'))
+
+    fig, _ = plot_validation_curve(cv_results)
+    fig.savefig(os.path.join(dest_dir, f'{name}.validation-curve.png'), dpi=300)
+    fig.savefig(os.path.join(dest_dir, f'{name}.validation-curve.pdf'), dpi=300)
 
 
 @cli.command(name='analyze', short_help='Run default analysis pipeline')
@@ -78,11 +122,68 @@ def analyze(model_file, index_file, max_syllable, group, representation, holdout
     fig.savefig(os.path.join(dest_dir, f'{name}.permutation-test.png'), dpi=300)
     fig.savefig(os.path.join(dest_dir, f'{name}.permutation-test.pdf'), dpi=300)
 
+    with open(os.path.join(dest_dir, f'{name}.performance_final-model_training-data.txt'), mode='w') as f:
+        f.writelines(results.final.classification_report(results.train))
+
     with open(os.path.join(dest_dir, f'{name}.performance_final-model_held-out-data.txt'), mode='w') as f:
         f.writelines(results.final.classification_report(results.test))
 
     with open(os.path.join(dest_dir, f'{name}.performance_final-model_all-data.txt'), mode='w') as f:
         f.writelines(results.final.classification_report(results.data))
+
+
+@cli.command(name='train', short_help='Run default analysis pipeline')
+@click.argument('model_file')
+@click.argument('index_file')
+@click.option('--max-syllable', default=100, help='maximum syllable to consider')
+@click.option('--group', type=str, multiple=True, default=None)
+@click.option('--representation', type=click.Choice(['usages', 'frames', 'trans']), default='usages')
+@click.option('--holdout', default=0.3, help='fraction of the data to hold out for testing')
+@click.option('--dim', default=2, help='number of dimentions for the LDA model')
+@click.option('--shrinkage', default='auto', help='float in range of (0, 1] or the string "auto"')
+@click.option('--dest-dir', type=click.Path(), help='Directory where results will be saved')
+@click.option('--name', type=str, default='moseq-lda-analysis', help='basename prefix of output files')
+def train(model_file, index_file, max_syllable, group, representation, holdout, dim, shrinkage, dest_dir, name):
+
+    # make sure destination directory exists
+    os.makedirs(dest_dir, exist_ok=True)
+    name = f'{name}.{representation}.{dim}D_{shrinkage:0.3f}-shrink'
+
+    representations = load_representations(index_file, model_file, max_syllable=max_syllable, groups=group)
+    aes = Aesthetics(group)
+    representations.describe()
+
+    train, test = representations.split(holdout)
+
+    # Create a LDA pipeline, passing along with any parameters the user supplied
+    estimator = create_lda_pipeline(**{
+        'n_components': dim,
+        'shrinkage': shrinkage
+    })
+
+    # train the model on the train subset
+    final = train_lda_model(estimator, train, representation)
+    final.save(os.path.join(dest_dir, f'{name}.lda_results.p'))
+
+    # plot the results
+    fig, _, df = plot_lda_results(final, representations, aes=aes, title=f'LDA {representation.capitalize()}')
+    fig.savefig(os.path.join(dest_dir, f'{name}.lda-results.png'), dpi=300)
+    fig.savefig(os.path.join(dest_dir, f'{name}.lda-results.pdf'), dpi=300)
+    df.to_csv(os.path.join(dest_dir, f'{name}.lda-results.tsv'), sep='\t', index=False)
+
+    # run and plot permutation test
+    fig, _ = plot_permutation_score(final.estimator, final.data.data(representation), final.data.groups)
+    fig.savefig(os.path.join(dest_dir, f'{name}.permutation-test.png'), dpi=300)
+    fig.savefig(os.path.join(dest_dir, f'{name}.permutation-test.pdf'), dpi=300)
+
+    with open(os.path.join(dest_dir, f'{name}.performance_final-model_training-data.txt'), mode='w') as f:
+        f.writelines(final.classification_report(train))
+
+    with open(os.path.join(dest_dir, f'{name}.performance_final-model_held-out-data.txt'), mode='w') as f:
+        f.writelines(final.classification_report(test))
+
+    with open(os.path.join(dest_dir, f'{name}.performance_final-model_all-data.txt'), mode='w') as f:
+        f.writelines(final.classification_report(representations))
 
 
 if __name__ == '__main__':
