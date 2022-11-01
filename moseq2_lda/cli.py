@@ -5,7 +5,12 @@ import numpy as np
 
 from moseq2_lda.data import load_representations
 from moseq2_lda.model import create_lda_pipeline, run_cross_validation, train_lda_model, train_lda_pipeline
+from moseq2_lda.util import click_monkey_patch_option_show_defaults
 from moseq2_lda.viz import Aesthetics, plot_validation_curve, plot_lda_results, plot_permutation_score
+
+
+# Show click option defaults
+click_monkey_patch_option_show_defaults()
 
 
 @click.group()
