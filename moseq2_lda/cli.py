@@ -150,9 +150,13 @@ def analyze(model_file, index_file, max_syllable, group, representation, holdout
 @click.option('--name', type=str, default='moseq-lda-analysis', help='basename prefix of output files')
 def train(model_file, index_file, max_syllable, group, representation, holdout, dim, shrinkage, dest_dir, name):
 
+    if not shrinkage == "auto":
+        shrinkage = float(shrinkage)
+
     # make sure destination directory exists
     os.makedirs(dest_dir, exist_ok=True)
-    name = f'{name}.{representation}.{dim}D_{shrinkage:0.3f}-shrink'
+    shrink_str = f'{shrinkage:0.3f}' if isinstance(shrinkage, float) else str(shrinkage)
+    name = f'{name}.{representation}.{dim}D_{shrink_str}-shrink'
 
     representations = load_representations(index_file, model_file, max_syllable=max_syllable, groups=group)
     aes = Aesthetics(group)
