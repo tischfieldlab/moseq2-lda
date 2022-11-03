@@ -174,6 +174,15 @@ def train(model_file, index_file, max_syllable, group, representation, holdout, 
     final = train_lda_model(estimator, train, representation)
     final.save(os.path.join(dest_dir, f'{name}.lda_results.p'))
 
+    with open(os.path.join(dest_dir, f'{name}.performance_final-model_training-data.txt'), mode='w') as f:
+        f.writelines(final.classification_report(train))
+
+    with open(os.path.join(dest_dir, f'{name}.performance_final-model_held-out-data.txt'), mode='w') as f:
+        f.writelines(final.classification_report(test))
+
+    with open(os.path.join(dest_dir, f'{name}.performance_final-model_all-data.txt'), mode='w') as f:
+        f.writelines(final.classification_report(representations))
+
     # plot the results
     fig, _, df = plot_lda_results(final, representations, aes=aes, title=f'LDA {representation.capitalize()}')
     fig.savefig(os.path.join(dest_dir, f'{name}.lda-results.png'), dpi=300)
@@ -184,15 +193,6 @@ def train(model_file, index_file, max_syllable, group, representation, holdout, 
     fig, _ = plot_permutation_score(final.estimator, final.data.data(representation), final.data.groups)
     fig.savefig(os.path.join(dest_dir, f'{name}.permutation-test.png'), dpi=300)
     fig.savefig(os.path.join(dest_dir, f'{name}.permutation-test.pdf'), dpi=300)
-
-    with open(os.path.join(dest_dir, f'{name}.performance_final-model_training-data.txt'), mode='w') as f:
-        f.writelines(final.classification_report(train))
-
-    with open(os.path.join(dest_dir, f'{name}.performance_final-model_held-out-data.txt'), mode='w') as f:
-        f.writelines(final.classification_report(test))
-
-    with open(os.path.join(dest_dir, f'{name}.performance_final-model_all-data.txt'), mode='w') as f:
-        f.writelines(final.classification_report(representations))
 
 
 if __name__ == '__main__':
