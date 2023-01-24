@@ -8,17 +8,17 @@ on:
       - "moseq2_lda/**"
       - "tests/**"
       - ".github/workflows/ci.yml"
-#      - "environment.yml"
-#      - "setup.cfg"
+      - "environment.yml"
+      - "setup.cfg"
   push:
     branches:
       - master
-#    paths:
-#      - "moseq2_lda/**"
-#      - "tests/**"
-#      - ".github/workflows/ci.yml"
-#      - "environment.yml"
-#      - "setup.cfg"
+    paths:
+      - "moseq2_lda/**"
+      - "tests/**"
+      - ".github/workflows/ci.yml"
+      - "environment.yml"
+      - "setup.cfg"
 
 jobs:
   # Lint with black, docstring check with pydocstyle, static type checking with mypy
@@ -59,24 +59,23 @@ jobs:
         token: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
         path: moseq2-viz
 
-
     - name: Install dependencies
       run: |
         pip install -e moseq2-viz
         pip install --editable moseq2-lda[dev]
 
-    - name: Run flake8
-      working-directory: moseq2-lda
+#    - name: Run flake8
+#      working-directory: moseq2-lda
+#      run: |
+#        flake8
+
+    - name: Run Black
       run: |
-        flake8
+        black --check moseq2_lda tests
 
-#    - name: Run Black
-#      run: |
-#        black --check moseq2_lda tests
-
-#    - name: Run pydocstyle
-#      run: |
-#        pydocstyle --convention=google moseq2_lda/
+    - name: Run pydocstyle
+      run: |
+        pydocstyle --convention=google moseq2_lda/
 
     - name: Run MyPy
       working-directory: moseq2-lda
