@@ -66,7 +66,7 @@ def _arrow3D(ax, x, y, z, dx, dy, dz, *args, **kwargs):
 setattr(Axes3D, "arrow3D", _arrow3D)
 
 
-def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics = None, levels: int = 5, alpha: float = 0.5):
+def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Optional[Aesthetics] = None, levels: int = 5, alpha: float = 0.5):
     """Plot transformed data for a 3D LDA model."""
     if aes is None:
         aes = Aesthetics(group_vals)
