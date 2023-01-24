@@ -1,4 +1,5 @@
 """Module contains 3D-specific plotting functions."""
+from typing import Optional
 import matplotlib as mpl
 import numpy as np
 import seaborn as sns
@@ -125,7 +126,7 @@ def plot_lda_kde_projections_3D_iso(ax, lda_result, group_vals, aes: Aesthetics,
     ax.set_zlim((minz, maxz))
 
 
-def plot_lda_results_3D(coeff, lda_result, lda_predictions, group_vals, title, figsize, relative_weights, aes: Aesthetics = None):
+def plot_lda_results_3D(coeff, lda_result, lda_predictions, group_vals, title, figsize, relative_weights, aes: Optional[Aesthetics] = None):
     """Plot 3D LDA results."""
     if aes is None:
         aes = Aesthetics(group_vals)

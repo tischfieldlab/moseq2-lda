@@ -1,5 +1,5 @@
 """Module contains functions for modelling moseq data with LDA."""
-from typing import List, Sequence, Union
+from typing import List, Optional, Sequence, Union
 from dataclasses import dataclass
 import joblib
 import numpy as np
@@ -236,7 +236,7 @@ class LdaResult:
         else:
             return self.estimator
 
-    def _get_data(self, data: MoseqRepresentations = None):
+    def _get_data(self, data: Optional[MoseqRepresentations] = None):
         if data is not None:
             x = data.data(self.representation)
             y = data.groups
@@ -246,7 +246,7 @@ class LdaResult:
 
         return x, y
 
-    def predict(self, data: MoseqRepresentations = None):
+    def predict(self, data: Optional[MoseqRepresentations] = None):
         """Predict class from `data`.
 
         Args:
@@ -255,7 +255,7 @@ class LdaResult:
         x, _ = self._get_data(data)
         return self.lda.predict(x)
 
-    def transform(self, data: MoseqRepresentations = None):
+    def transform(self, data: Optional[MoseqRepresentations] = None):
         """Transform `data`.
 
         Args:
@@ -264,7 +264,7 @@ class LdaResult:
         x, _ = self._get_data(data)
         return self.lda.transform(x)
 
-    def score(self, data: MoseqRepresentations = None):
+    def score(self, data: Optional[MoseqRepresentations] = None):
         """Get the LDA score for `data`.
 
         Args:
@@ -273,7 +273,7 @@ class LdaResult:
         x, y = self._get_data(data)
         return self.lda.score(x, y)
 
-    def classification_report(self, data: MoseqRepresentations = None):
+    def classification_report(self, data: Optional[MoseqRepresentations] = None):
         """Generate a classification report for `data`.
 
         Args:
@@ -302,7 +302,7 @@ class LdaResult:
 
 
 def train_lda_pipeline(
-    data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: dict = None
+    data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: Optional[dict] = None
 ) -> "LdaPipelineResult":
     """This is a "batteries-included" method to train an LDA model.
 

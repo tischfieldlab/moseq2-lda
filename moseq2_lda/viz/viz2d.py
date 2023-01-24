@@ -217,7 +217,7 @@ def plot_lda_scalings(lda, ax=None):
 
 
 def plot_lda_results_2D(
-    lda, lda_transformed, lda_predictions, group_vals, aes: Aesthetics = None, title="LDA", figsize=(25, 25), relative_weights=None
+    lda, lda_transformed, lda_predictions, group_vals, aes: Optional[Aesthetics] = None, title="LDA", figsize=(25, 25), relative_weights=None
 ):
     """Plot results for a 2D LDA model."""
     if aes is None:

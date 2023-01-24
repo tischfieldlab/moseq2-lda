@@ -1,6 +1,6 @@
 """Module contains functions for visualizations of LDA models."""
 from dataclasses import asdict
-from typing import ClassVar, List, Tuple
+from typing import ClassVar, List, Optional, Tuple
 
 import pandas as pd
 import seaborn as sns
@@ -88,7 +88,7 @@ def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
 def plot_lda_results(
     lda: LdaResult,
     data: MoseqRepresentations,
-    aes: Aesthetics = None,
+    aes: Optional[Aesthetics] = None,
     title: str = "LDA",
     figsize: Tuple[int, int] = (25, 20),
     relative_weights=None,

@@ -1,7 +1,7 @@
 """Module contains classes and functions for loading and storing moseq data."""
 from collections import Counter
 from dataclasses import dataclass
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 from typing_extensions import Literal
 
 import numpy as np
@@ -152,8 +152,8 @@ def load_representations(
     index_file: str,
     model_file: str,
     max_syllable: int = 100,
-    groups: List[str] = None,
-    exclude_uuids: List[str] = None,
+    groups: Optional[List[str]] = None,
+    exclude_uuids: Optional[List[str]] = None,
     prune_trans: bool = True,
 ) -> MoseqRepresentations:
     """Load representations of moseq data.
@@ -227,7 +227,7 @@ def load_representations(
     return MoseqRepresentations(meta=metadata_vals, usages=np.array(usage_vals), frames=np.array(frames_vals), trans=tm_vals_np)
 
 
-def load_groups(index_file: str, custom_groupings: List[str] = None) -> Dict[str, str]:
+def load_groups(index_file: str, custom_groupings: Optional[List[str]] = None) -> Dict[str, str]:
     """Load available groups from a moseq2 index file, and return a map from origional group to (possibly custom) group.
 
     Args:
