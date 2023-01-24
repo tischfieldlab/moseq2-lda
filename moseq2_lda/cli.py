@@ -137,7 +137,7 @@ def analyze(model_file, index_file, max_syllable, group, representation, holdout
         f.writelines(results.final.classification_report(results.data))
 
 
-@cli.command(name="train", short_help="Run default analysis pipeline")
+@cli.command(name="train", short_help="Train a single LDA model")
 @click.argument("model_file")
 @click.argument("index_file")
 @click.option("--max-syllable", default=100, help="maximum syllable to consider")
