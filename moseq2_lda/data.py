@@ -27,7 +27,7 @@ class MoseqSampleMetadata:
     ''' Date and time at which this sample's raw data was collected '''
     StartTime: str
     ''' Name of the apparatus in which this sample's raw data was collected'''
-    ApparatusName: str
+    ApparatusName: str = 'unknown'
 
 
 RepresentationType = Literal['usages', 'frames', 'trans']
