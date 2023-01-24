@@ -23,12 +23,12 @@ class Annotation3D(Annotation):
 
 
 def _annotate3D(ax, text, xyz, *args, **kwargs):
-    '''Add anotation `text` to an `Axes3d` instance.'''
+    """Add anotation `text` to an `Axes3d` instance."""
     annotation = Annotation3D(text, xyz, *args, **kwargs)
     ax.add_artist(annotation)
 
 
-setattr(Axes3D, 'annotate3D', _annotate3D)
+setattr(Axes3D, "annotate3D", _annotate3D)
 
 
 class Arrow3D(FancyArrowPatch):
@@ -48,12 +48,12 @@ class Arrow3D(FancyArrowPatch):
 
 
 def _arrow3D(ax, x, y, z, dx, dy, dz, *args, **kwargs):
-    '''Add an 3d arrow to an `Axes3D` instance.'''
+    """Add an 3d arrow to an `Axes3D` instance."""
     arrow = Arrow3D(x, y, z, dx, dy, dz, *args, **kwargs)
     ax.add_artist(arrow)
 
 
-setattr(Axes3D, 'arrow3D', _arrow3D)
+setattr(Axes3D, "arrow3D", _arrow3D)
 
 
 def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics = None, levels: int = 5, alpha: float = 0.5):
@@ -68,19 +68,19 @@ def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics
 
     for g in aes.groups:
         mask = np.array(group_vals) == g
-        colors = sns.light_palette(aes.palette[aes.groups.index(g)], levels+1)
+        colors = sns.light_palette(aes.palette[aes.groups.index(g)], levels + 1)
         for i, c in enumerate(colors):
             colors[i] = (*c, alpha)  # add alpha level to each color level
         colors[0] = (1.0, 1.0, 1.0, 0.0)  # final level should be fully transparent white
 
         xx, yy, f = compute_kde(lda_transformed, mask, 0, 1, extents)
-        ax.contourf(xx, yy, f, zdir='z', offset=minz, colors=colors, levels=levels)
+        ax.contourf(xx, yy, f, zdir="z", offset=minz, colors=colors, levels=levels)
 
         xx, yy, f = compute_kde(lda_transformed, mask, 0, 2, extents)
-        ax.contourf(xx, f, yy, zdir='y', offset=maxy, colors=colors, levels=levels)
+        ax.contourf(xx, f, yy, zdir="y", offset=maxy, colors=colors, levels=levels)
 
         xx, yy, f = compute_kde(lda_transformed, mask, 1, 2, extents)
-        ax.contourf(f, xx, yy, zdir='x', offset=minx, colors=colors, levels=levels)
+        ax.contourf(f, xx, yy, zdir="x", offset=minx, colors=colors, levels=levels)
 
     ax.set_xlim((minx, maxx))
     ax.set_ylim((miny, maxy))
@@ -96,14 +96,18 @@ def plot_lda_kde_projections_3D_iso(ax, lda_result, group_vals, aes: Aesthetics,
 
     for g in aes.groups:
         mask = np.array(group_vals) == g
-        colors = sns.light_palette(aes.palette[aes.groups.index(g)], levels+1)
+        colors = sns.light_palette(aes.palette[aes.groups.index(g)], levels + 1)
         for i, c in enumerate(colors):
             colors[i] = (*c, alpha)  # add alpha level to each color level
         colors[0] = (1.0, 1.0, 1.0, 0.0)  # final level should be fully transparent white
 
         xx, yy, zz, f = compute_3D_kde(lda_result, mask, extents)
         # ax.plot_surface(xx, yy, zz, )
-        ax.contour3D(xx, yy, zz, )
+        ax.contour3D(
+            xx,
+            yy,
+            zz,
+        )
 
     ax.set_xlim((minx, maxx))
     ax.set_ylim((miny, maxy))
@@ -118,7 +122,7 @@ def plot_lda_results_3D(coeff, lda_result, lda_predictions, group_vals, title, f
     lgd_itms = [mpl.lines.Line2D([0], [0], linestyle="none", c=c, marker=m) for c, m in zip(aes.palette, aes.markers)]
 
     fig = plt.figure(figsize=figsize)
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(111, projection="3d")
 
     cs = [aes.palette[aes.groups.index(g)] for g in group_vals]
     ms = [aes.markers[aes.groups.index(g)] for g in group_vals]
@@ -127,9 +131,9 @@ def plot_lda_results_3D(coeff, lda_result, lda_predictions, group_vals, title, f
         ax.scatter(d[0], d[1], d[2], c=[c], marker=m, label=g)
 
     fig.legend(lgd_itms, aes.groups)
-    ax.set_xlabel('LDA_1')
-    ax.set_ylabel('LDA_2')
-    ax.set_zlabel('LDA_3')
+    ax.set_xlabel("LDA_1")
+    ax.set_ylabel("LDA_2")
+    ax.set_zlabel("LDA_3")
     ax.set_title(title)
 
     return fig, ax
