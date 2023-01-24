@@ -64,11 +64,6 @@ jobs:
         pip install -e moseq2-viz
         pip install --editable moseq2-lda[dev]
 
-#    - name: Run flake8
-#      working-directory: moseq2-lda
-#      run: |
-#        flake8
-
     - name: Run Black
       run: |
         black --check moseq2_lda tests
