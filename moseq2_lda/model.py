@@ -207,7 +207,7 @@ def run_cross_validation(
     return results
 
 
-def train_lda_model(estimator: LDAEstimator, data: MoseqRepresentations, representation: RepresentationType) -> LdaResult:
+def train_lda_model(estimator: LDAEstimator, data: MoseqRepresentations, representation: RepresentationType) -> "LdaResult":
     """Train a LDA model on a representation from a dataset.
 
     Args:
@@ -303,7 +303,7 @@ class LdaResult:
 
 def train_lda_pipeline(
     data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: dict = None
-) -> LdaPipelineResult:
+) -> "LdaPipelineResult":
     """This is a "batteries-included" method to train an LDA model.
 
     Performs the following procedure:
