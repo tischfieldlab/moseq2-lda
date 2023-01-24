@@ -223,6 +223,7 @@ def train_lda_model(estimator: LDAEstimator, data: MoseqRepresentations, represe
 @dataclass
 class LdaResult:
     """Encapuslates the results of training a single LDA model."""
+
     estimator: LDAEstimator
     data: MoseqRepresentations
     representation: RepresentationType
@@ -300,7 +301,9 @@ class LdaResult:
         return joblib.load(path)
 
 
-def train_lda_pipeline(data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: dict = None) -> LdaPipelineResult:
+def train_lda_pipeline(
+    data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: dict = None
+) -> LdaPipelineResult:
     """This is a "batteries-included" method to train an LDA model.
 
     Performs the following procedure:

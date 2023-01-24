@@ -14,6 +14,7 @@ from moseq2_lda.viz.viz import Aesthetics
 
 class Annotation3D(Annotation):
     """Class for 3D annotations in matplotlib."""
+
     def __init__(self, text, xyz, *args, **kwargs):
         """Initalize this annotation."""
         super().__init__(text, xy=(0, 0), *args, **kwargs)
@@ -37,6 +38,7 @@ setattr(Axes3D, "annotate3D", _annotate3D)
 
 class Arrow3D(FancyArrowPatch):
     """Class for 3D arrows in matplotlib."""
+
     def __init__(self, x, y, z, dx, dy, dz, *args, **kwargs):
         """Initalize this 3D Arrow."""
         super().__init__((0, 0), (0, 0), *args, **kwargs)

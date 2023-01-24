@@ -1,6 +1,6 @@
 """Module contains functions for visualizations of LDA models."""
 from dataclasses import asdict
-from typing import ClassVar, List
+from typing import ClassVar, List, Tuple
 
 import pandas as pd
 import seaborn as sns
@@ -39,7 +39,7 @@ class Aesthetics:
 
 def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
     """Plot a Validation Curve for a `CrossValidationResult`.
-    
+
     Args:
         cv_result: CrossValidationResult to plot
         ax: if not None, use this matplotlib axis for plotting, otherwise will create a new figure and axis
@@ -86,7 +86,12 @@ def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
 
 
 def plot_lda_results(
-    lda: LdaResult, data: MoseqRepresentations, aes: Aesthetics = None, title: str="LDA", figsize: tuple[int, int]=(25, 20), relative_weights=None
+    lda: LdaResult,
+    data: MoseqRepresentations,
+    aes: Aesthetics = None,
+    title: str = "LDA",
+    figsize: Tuple[int, int] = (25, 20),
+    relative_weights=None,
 ):
     """Plot, in several aspects, an `LdaResult`.
 
