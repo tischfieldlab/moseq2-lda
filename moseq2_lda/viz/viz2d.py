@@ -1,3 +1,4 @@
+"""Module contains 2D-specific plotting functions."""
 from matplotlib import pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
@@ -10,7 +11,7 @@ from moseq2_lda.viz.viz import Aesthetics
 
 
 def plot_lda_arrows(ax, lda_result, group_vals, arrow_specs):
-
+    """Place arrows on an LDA plot."""
     for ag in arrow_specs:
         args = {
             "padding": 0.7,
@@ -37,6 +38,7 @@ def plot_lda_arrows(ax, lda_result, group_vals, arrow_specs):
 
 # style:Literal['kde', 'centroid']
 def plot_lda_projection(lda_transformed, group_vals, groups, palette, markers, title="LDA", ax=None, style=None):
+    """Plot a projection of the LDA data."""
     if ax is None:
         fig, ax = plt.subplots(1, 1)
 
@@ -127,6 +129,7 @@ def plot_lda_projection(lda_transformed, group_vals, groups, palette, markers, t
 
 
 def plot_lda_confusion_matrix(lda_predictions, group_vals, groups, ax=None):
+    """Plot a confusion matrix for LDA classifications."""
     if ax is None:
         fig, ax = plt.subplots(1, 1)
 
@@ -142,6 +145,7 @@ def plot_lda_confusion_matrix(lda_predictions, group_vals, groups, ax=None):
 
 
 def plot_lda_weights(lda_coeff, groups, relative_weights=None, ax=None):
+    """Plot weights for an LDA model."""
     if ax is None:
         fig, ax = plt.subplots(1, 1)
 
@@ -167,6 +171,7 @@ def plot_lda_weights(lda_coeff, groups, relative_weights=None, ax=None):
 
 
 def plot_lda_scalings(lda, ax=None):
+    """Plot the scalings for a LDA model."""
     if ax is None:
         fig, ax = plt.subplots(1, 1)
 
@@ -214,7 +219,7 @@ def plot_lda_scalings(lda, ax=None):
 def plot_lda_results_2D(
     lda, lda_transformed, lda_predictions, group_vals, aes: Aesthetics = None, title="LDA", figsize=(25, 25), relative_weights=None
 ):
-
+    """Plot results for a 2D LDA model."""
     if aes is None:
         aes = Aesthetics(group_vals)
 

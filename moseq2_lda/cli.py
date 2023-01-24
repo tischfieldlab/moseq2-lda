@@ -1,3 +1,4 @@
+"""CLI interface for the moseq2-lda package."""
 import click
 import os
 
@@ -16,9 +17,7 @@ click_monkey_patch_option_show_defaults()
 @click.group()
 @click.version_option()
 def cli():
-    """Toolbox for training and using scikit-learn Linear Discriminant Analysis models
-    for analysis of moseq models
-    """
+    """Toolbox for training and using scikit-learn Linear Discriminant Analysis (LDA) models for analysis of moseq data."""
     pass  # pylint: disable=unnecessary-pass
 
 
@@ -83,7 +82,7 @@ def cross_validate(model_file, index_file, max_syllable, group, representation, 
 @click.option("--dest-dir", type=click.Path(), help="Directory where results will be saved")
 @click.option("--name", type=str, default="moseq-lda-analysis", help="basename prefix of output files")
 def analyze(model_file, index_file, max_syllable, group, representation, holdout, dim, dest_dir, name):
-    """Analyze moseq data via LDA
+    r"""Analyze moseq data via LDA.
 
     \b
     This is a "batteries-included" method which performs the following procedure:
@@ -104,7 +103,6 @@ def analyze(model_file, index_file, max_syllable, group, representation, holdout
     - Perform and plot permutation test with the final model
     - Classification reports
     """
-
     # make sure destination directory exists
     os.makedirs(dest_dir, exist_ok=True)
     name = f"{name}.{representation}"
@@ -151,7 +149,7 @@ def analyze(model_file, index_file, max_syllable, group, representation, holdout
 @click.option("--dest-dir", type=click.Path(), help="Directory where results will be saved")
 @click.option("--name", type=str, default="moseq-lda-analysis", help="basename prefix of output files")
 def train(model_file, index_file, max_syllable, group, representation, holdout, dim, shrinkage, dest_dir, name):
-    """Train a single LDA model
+    r"""Train a single LDA model.
 
     \b
     This command will train a single LDA model

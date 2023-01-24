@@ -1,3 +1,4 @@
+"""Module contains 3D-specific plotting functions."""
 import matplotlib as mpl
 import numpy as np
 import seaborn as sns
@@ -12,11 +13,14 @@ from moseq2_lda.viz.viz import Aesthetics
 
 
 class Annotation3D(Annotation):
+    """Class for 3D annotations in matplotlib."""
     def __init__(self, text, xyz, *args, **kwargs):
+        """Initalize this annotation."""
         super().__init__(text, xy=(0, 0), *args, **kwargs)
         self._xyz = xyz
 
     def draw(self, renderer):
+        """Draw this annotation."""
         x2, y2, z2 = proj_transform(*self._xyz, self.axes.M)
         self.xy = (x2, y2)
         super().draw(renderer)
@@ -32,12 +36,15 @@ setattr(Axes3D, "annotate3D", _annotate3D)
 
 
 class Arrow3D(FancyArrowPatch):
+    """Class for 3D arrows in matplotlib."""
     def __init__(self, x, y, z, dx, dy, dz, *args, **kwargs):
+        """Initalize this 3D Arrow."""
         super().__init__((0, 0), (0, 0), *args, **kwargs)
         self._xyz = (x, y, z)
         self._dxdydz = (dx, dy, dz)
 
     def draw(self, renderer):
+        """Draw this 3D arrow."""
         x1, y1, z1 = self._xyz
         dx, dy, dz = self._dxdydz
         x2, y2, z2 = (x1 + dx, y1 + dy, z1 + dz)
@@ -57,6 +64,7 @@ setattr(Axes3D, "arrow3D", _arrow3D)
 
 
 def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics = None, levels: int = 5, alpha: float = 0.5):
+    """Plot transformed data for a 3D LDA model."""
     if aes is None:
         aes = Aesthetics(group_vals)
 
@@ -88,6 +96,7 @@ def plot_lda_kde_projections_3D(ax, lda_transformed, group_vals, aes: Aesthetics
 
 
 def plot_lda_kde_projections_3D_iso(ax, lda_result, group_vals, aes: Aesthetics, levels: int = 5, alpha: float = 0.5):
+    """Plot 3D isosurfaces from KDE for a 3D LDA model."""
     minx, maxx = ax.get_xlim()
     miny, maxy = ax.get_ylim()
     minz, maxz = ax.get_zlim()
@@ -115,7 +124,7 @@ def plot_lda_kde_projections_3D_iso(ax, lda_result, group_vals, aes: Aesthetics,
 
 
 def plot_lda_results_3D(coeff, lda_result, lda_predictions, group_vals, title, figsize, relative_weights, aes: Aesthetics = None):
-
+    """Plot 3D LDA results."""
     if aes is None:
         aes = Aesthetics(group_vals)
 

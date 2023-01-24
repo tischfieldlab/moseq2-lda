@@ -1,3 +1,4 @@
+"""Module contains functions for visualizations of LDA models."""
 from dataclasses import asdict
 from typing import ClassVar, List
 
@@ -10,11 +11,19 @@ from sklearn.model_selection import permutation_test_score
 
 
 class Aesthetics:
+    """Encapsulates aesthetic information used for plotting."""
 
     default_palette: ClassVar[str] = "deep"
     marker_pool: ClassVar[List[str]] = ["o", "v", "^", "<", ">", "s", "p", "P", "D", "X", "*", "h", "H", "d"]
 
     def __init__(self, groups: List[str], palette=None, markers=None):
+        """Construct a new Aesthetics object.
+
+        Args:
+            groups (List[str]): group order to be used
+            palette: Palette to be used for colors, see `seaborn.color_palette()` for more information
+            markers: Markers to be used for each group
+        """
         self.groups = list(dict.fromkeys(groups))
         n_groups = len(self.groups)
 
@@ -29,6 +38,12 @@ class Aesthetics:
 
 
 def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
+    """Plot a Validation Curve for a `CrossValidationResult`.
+    
+    Args:
+        cv_result: CrossValidationResult to plot
+        ax: if not None, use this matplotlib axis for plotting, otherwise will create a new figure and axis
+    """
     if ax is None:
         fig, ax = plt.subplots(1, 1)
 
@@ -71,9 +86,18 @@ def plot_validation_curve(cv_result: CrossValidationResult, ax=None):
 
 
 def plot_lda_results(
-    lda: LdaResult, data: MoseqRepresentations, aes: Aesthetics = None, title="LDA", figsize=(25, 20), relative_weights=None
+    lda: LdaResult, data: MoseqRepresentations, aes: Aesthetics = None, title: str="LDA", figsize: tuple[int, int]=(25, 20), relative_weights=None
 ):
+    """Plot, in several aspects, an `LdaResult`.
 
+    Args:
+        lda (LdaResult): LdaResult to plot
+        data (MoseqRepresentations): data to plot
+        aes (Aesthetics): Aesthetic information for plots
+        title (str): Title for plot
+        figsize (tuple[int, int]): size of the figure
+        relative_weights: relative weights
+    """
     lda_result = lda.transform(data)
     lda_predictions = lda.predict(data)
 
@@ -108,6 +132,16 @@ def plot_lda_results(
 
 
 def plot_permutation_score(lda, X, y, cv=None, n_permutations=1000, ax=None):
+    """Compute and plot the results of a permutation test on an LDA model.
+
+    Args:
+        lda (LinearDiscriminantAnalysis): LDA model to test
+        X: data to use for test
+        y: labels to use for test
+        cv: cross-validation generator
+        n_permutations: number of permutations to generate
+        ax: if not None, use this matplotlib axis for plotting, otherwise will create a new figure and axis
+    """
     if ax is None:
         fig, ax = plt.subplots(1, 1)
 
@@ -122,7 +156,3 @@ def plot_permutation_score(lda, X, y, cv=None, n_permutations=1000, ax=None):
     ax.legend(loc="best")
 
     return fig, ax
-
-
-def save_figure(fig, dest, format):
-    pass

@@ -1,3 +1,4 @@
+"""Module contains functions for modelling moseq data with LDA."""
 from typing import List, Sequence, Union
 from dataclasses import dataclass
 import joblib
@@ -17,10 +18,10 @@ LDAEstimator = Union[Pipeline, LinearDiscriminantAnalysis]
 
 
 def create_lda_pipeline(**kwargs) -> LDAEstimator:
-    """Create a default LDA pipeline
+    """Create a default LDA pipeline.
 
-    Parameters:
-    **kwargs: additional arguments to be passed to the constructor for class `LinearDiscriminantAnalysis`
+    Args:
+        **kwargs: additional arguments to be passed to the constructor for class `LinearDiscriminantAnalysis`
     """
     n_components = kwargs.pop("n_components", 2)
     return Pipeline(
@@ -33,8 +34,13 @@ def create_lda_pipeline(**kwargs) -> LDAEstimator:
 
 
 def set_estimator_params(estimator: LDAEstimator, **kwargs) -> LDAEstimator:
-    """Set parameters on an LDAEstimator
-    helper to handle the case of Pipeline vs LinearDiscriminantAnalysis
+    """Set parameters on an LDAEstimator.
+
+    Helper to handle the case of Pipeline vs LinearDiscriminantAnalysis
+
+    Args:
+        estimator (LDAEstimator): estimator to operate upon
+        kwargs: additional parameters to set on the LDA estimator
     """
     if isinstance(estimator, Pipeline):
         estimator[-1].set_params(**kwargs)
@@ -45,7 +51,7 @@ def set_estimator_params(estimator: LDAEstimator, **kwargs) -> LDAEstimator:
 
 @dataclass
 class CrossValidationResult:
-    """Dataclass containing the results of a cross_validation call"""
+    """Dataclass containing the results of a cross_validation call."""
 
     """ Base Estimator """
     base_estimator: LDAEstimator
@@ -73,62 +79,62 @@ class CrossValidationResult:
 
     @property
     def train_scores_mean(self):
-        """Get the mean of the scoring metric on the train dataset for each parameter value evaluated"""
+        """Get the mean of the scoring metric on the train dataset for each parameter value evaluated."""
         return np.mean(self.train_scores, axis=1)
 
     @property
     def train_scores_std(self):
-        """Get the standard deviation of the scoring metric on the train dataset for each parameter value evaluated"""
+        """Get the standard deviation of the scoring metric on the train dataset for each parameter value evaluated."""
         return np.std(self.train_scores, axis=1)
 
     @property
     def test_scores_mean(self):
-        """Get the mean of the scoring metric on the test dataset for each parameter value evaluated"""
+        """Get the mean of the scoring metric on the test dataset for each parameter value evaluated."""
         return np.mean(self.test_scores, axis=1)
 
     @property
     def test_scores_std(self):
-        """Get the standard deviation of the scoring metric on the test dataset for each parameter value evaluated"""
+        """Get the standard deviation of the scoring metric on the test dataset for each parameter value evaluated."""
         return np.std(self.test_scores, axis=1)
 
     @property
     def best(self) -> dict:
-        """Get a dict describing the best model parameter value"""
+        """Get a dict describing the best model parameter value."""
         return self.model_info(int(np.nanargmax(self.test_scores_mean)))
 
     @property
     def worst(self) -> dict:
-        """Get a dict describing the worst model parameter value"""
+        """Get a dict describing the worst model parameter value."""
         return self.model_info(int(np.nanargmin(self.test_scores_mean)))
 
     def model_info(self, index: int) -> dict:
-        """Get a dict describing the a particular model parameter value"""
+        """Get a dict describing the a particular model parameter value."""
         return {"idx": index, "param": self.param_range[index], "mean": self.test_scores_mean[index], "std": self.test_scores_std[index]}
 
     @property
     def param_min(self):
-        """Get the minimum parameter value that was evaluated"""
+        """Get the minimum parameter value that was evaluated."""
         return np.min(self.param_range)
 
     @property
     def param_max(self):
-        """Get the maximum parameter value that was evaluated"""
+        """Get the maximum parameter value that was evaluated."""
         return np.max(self.param_range)
 
     def save(self, dest: str):
-        """Save this CrossValidationResult
+        """Save this CrossValidationResult.
 
-        Parameters:
-        dest (str): destination for the saved result
+        Args:
+            dest (str): destination for the saved result
         """
         joblib.dump(self, dest)
 
     @classmethod
     def load(cls, path: str) -> "CrossValidationResult":
-        """Load a CrossValidationResult from a file
+        """Load a CrossValidationResult from a file.
 
-        Parameters:
-        dest (str): destination for the saved result
+        Args:
+            path (str): path to the pickle file to load
         """
         return joblib.load(path)
 
@@ -143,19 +149,18 @@ def run_cross_validation(
     scoring="accuracy",
     n_jobs: int = -1,
 ) -> CrossValidationResult:
-    """Run cross-validation to determine best model hyperparameter value
+    """Run cross-validation to determine best model hyperparameter value.
 
-    Parameters:
-    estimator (LDAEstimator): an LDA estimator to cross validate
-    X (np.ndarray): data to use for cross validation
-    Y (np.ndarray): data labels to use for cross validation
-    param_name (str): name of the parameter to optimize
-    param_range (np.ndarray): array of parameter values to try
-    cv (): Cross-validation generator or an iterable, optional. Determines the cross-validation splitting strategy
-    scoring (str): scoring metric to use for model evaluation
-    n_jobs (int): number of parallel workers to use for model training
+    Args:
+        estimator (LDAEstimator): an LDA estimator to cross validate
+        X (np.ndarray): data to use for cross validation
+        Y (np.ndarray): data labels to use for cross validation
+        param_name (str): name of the parameter to optimize
+        param_range (np.ndarray): array of parameter values to try
+        cv (): Cross-validation generator or an iterable, optional. Determines the cross-validation splitting strategy
+        scoring (str): scoring metric to use for model evaluation
+        n_jobs (int): number of parallel workers to use for model training
     """
-
     if cv is None:
         cv = model_selection.RepeatedStratifiedKFold(n_splits=5, n_repeats=10)
 
@@ -202,7 +207,14 @@ def run_cross_validation(
     return results
 
 
-def train_lda_model(estimator: LDAEstimator, data: MoseqRepresentations, representation: RepresentationType):
+def train_lda_model(estimator: LDAEstimator, data: MoseqRepresentations, representation: RepresentationType) -> LdaResult:
+    """Train a LDA model on a representation from a dataset.
+
+    Args:
+        estimator (LDAEstimator): estimator to train
+        data (MoseqRepresentations): dataset to use for training
+        representation (RepresentationType): type of representation to use for training
+    """
     estimator.fit(data.data(representation), data.groups)
 
     return LdaResult(estimator=estimator, data=data, representation=representation)
@@ -210,12 +222,14 @@ def train_lda_model(estimator: LDAEstimator, data: MoseqRepresentations, represe
 
 @dataclass
 class LdaResult:
+    """Encapuslates the results of training a single LDA model."""
     estimator: LDAEstimator
     data: MoseqRepresentations
     representation: RepresentationType
 
     @property
-    def lda(self):
+    def lda(self) -> LinearDiscriminantAnalysis:
+        """Get the underlying instance of `LinearDiscriminantAnalysis`."""
         if isinstance(self.estimator, Pipeline):
             return self.estimator[-1]
         else:
@@ -232,42 +246,64 @@ class LdaResult:
         return x, y
 
     def predict(self, data: MoseqRepresentations = None):
+        """Predict class from `data`.
+
+        Args:
+            data (MoseqRepresentations|None): Data to predict upon. If None, use `self.data`
+        """
         x, _ = self._get_data(data)
         return self.lda.predict(x)
 
     def transform(self, data: MoseqRepresentations = None):
+        """Transform `data`.
+
+        Args:
+            data (MoseqRepresentations|None): Data to transform. If None, use `self.data`
+        """
         x, _ = self._get_data(data)
         return self.lda.transform(x)
 
     def score(self, data: MoseqRepresentations = None):
+        """Get the LDA score for `data`.
+
+        Args:
+            data (MoseqRepresentations|None): Data to score. If None, use `self.data`
+        """
         x, y = self._get_data(data)
         return self.lda.score(x, y)
 
     def classification_report(self, data: MoseqRepresentations = None):
+        """Generate a classification report for `data`.
+
+        Args:
+            data (MoseqRepresentations|None): Data for which to generate a classification report. If None, use `self.data`.
+        """
         x, y = self._get_data(data)
         p = self.lda.predict(x)
         return classification_report(y_true=y, y_pred=p)
 
     def save(self, dest: str):
-        """Save this LdaResult
+        """Save this LdaResult.
 
-        Parameters:
-        dest (str): destination for the saved result
+        Args:
+            dest (str): destination for the saved result
         """
         joblib.dump(self, dest)
 
     @classmethod
     def load(cls, path: str) -> "LdaResult":
-        """Load a LdaResult from a file
+        """Load a LdaResult from a file.
 
-        Parameters:
-        dest (str): destination for the saved result
+        Args:
+            path (str): path to the pickle file to load
         """
         return joblib.load(path)
 
 
-def train_lda_pipeline(data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: dict = None):
-    """This is a "batteries-included" method which performs the following procedure:
+def train_lda_pipeline(data: MoseqRepresentations, representation: RepresentationType, holdout: float = 0.3, lda_kwargs: dict = None) -> LdaPipelineResult:
+    """This is a "batteries-included" method to train an LDA model.
+
+    Performs the following procedure:
     - split the representations into `test` and `train` subsets
     - creates an LDA estimator
     - run a cross-validated search (k-fold stratified CV) for the hyperparameter `shrinkage` using
@@ -276,8 +312,13 @@ def train_lda_pipeline(data: MoseqRepresentations, representation: Representatio
       the full `train` subset of the representations
     - predict on the held-out `test` subsets and print a classification report
     - construct and return a `LdaPipelineResult` object
-    """
 
+    Args:
+        data (MoseqRepresentations): dataset to use for training
+        representation (RepresentationType): Representation to use
+        holdout (float): percentage of data to hold out during training
+        lda_kwargs (dict): additional kwargs to pass to `create_lda_pipeline()`
+    """
     # Split data into train and test sets.
     # Train will be used for CV and final model training
     # Test will only be used for evaluation of the final model
@@ -311,7 +352,7 @@ def train_lda_pipeline(data: MoseqRepresentations, representation: Representatio
 
 @dataclass
 class LdaPipelineResult:
-    """Class containing results from `train_lda_pipeline`"""
+    """Class containing results from `train_lda_pipeline`."""
 
     data: MoseqRepresentations
     representation: str
@@ -321,18 +362,18 @@ class LdaPipelineResult:
     test: MoseqRepresentations
 
     def save(self, dest: str):
-        """Save this LdaPipelineResult
+        """Save this LdaPipelineResult.
 
-        Parameters:
-        dest (str): destination for the saved result
+        Args:
+            dest (str): destination for the saved result
         """
         joblib.dump(self, dest)
 
     @classmethod
     def load(cls, path: str) -> "LdaPipelineResult":
-        """Load a LdaPipelineResult from a file
+        """Load a LdaPipelineResult from a file.
 
-        Parameters:
-        dest (str): destination for the saved result
+        Args:
+            path (str): path to the pickle file to load
         """
         return joblib.load(path)

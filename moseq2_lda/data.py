@@ -1,3 +1,4 @@
+"""Module contains classes and functions for loading and storing moseq data."""
 from collections import Counter
 from dataclasses import dataclass
 from typing import Dict, List, Union
@@ -12,7 +13,7 @@ from tqdm import tqdm
 
 @dataclass(frozen=True)
 class MoseqSampleMetadata:
-    """Dataclass storing metadata for a single sample"""
+    """Dataclass storing metadata for a single sample."""
 
     """ Unique identifier for this sample """
     uuid: str
@@ -33,7 +34,7 @@ RepresentationType = Literal["usages", "frames", "trans"]
 
 @dataclass(frozen=True)
 class MoseqRepresentations:
-    """Contains various representations of moseq data"""
+    """Contains various representations of moseq data."""
 
     """ Collection of metadata associated with the moseq data"""
     meta: List[MoseqSampleMetadata]
@@ -45,44 +46,44 @@ class MoseqRepresentations:
     trans: np.ndarray
 
     def data(self, representation: RepresentationType) -> np.ndarray:
-        """Gets the data for a given representation
+        """Gets the data for a given representation.
 
-        Parameters:
-        representation (RepresentationType): Type of representation to yield
+        Args:
+            representation (RepresentationType): Type of representation to yield
 
         Returns:
-        np.ndarray - numpy array containing data of the requested representation type
+            np.ndarray - numpy array containing data of the requested representation type
         """
         return getattr(self, representation)
 
     @property
     def n_samples(self):
-        """Gets the number of samples in this dataset"""
+        """Gets the number of samples in this dataset."""
         return len(self.meta)
 
     @property
     def classes(self):
-        """Gets the unique set of group labels in the dataset"""
+        """Gets the unique set of group labels in the dataset."""
         return list(set(self.groups))
 
     @property
     def groups(self):
-        """Gets an array of group labels for each sample in the dataset"""
+        """Gets an array of group labels for each sample in the dataset."""
         return np.array([m.group for m in self.meta])
 
     @property
     def uuids(self):
-        """Gets an array of uuids for each sample in the dataset"""
+        """Gets an array of uuids for each sample in the dataset."""
         return np.array([m.uuid for m in self.meta])
 
     def describe(self, as_str: bool = False) -> Union[str, None]:
-        """Describe the data within this instance
+        """Describe the data within this instance.
 
-        Parameters:
-        as_str (bool): if True, return the description as a string, otherwise print to stdout
+        Args:
+            as_str (bool): if True, return the description as a string, otherwise print to stdout
 
         Returns:
-        None if `as_str` is False, otherwise the description as a string
+            None if `as_str` is False, otherwise the description as a string
         """
         buffer = ""
         buffer += f"{self.usages.shape[1]} modules in usages\n"
@@ -104,14 +105,14 @@ class MoseqRepresentations:
             return None
 
     def split(self, test_size: float = 0.3, seed: Union[int, np.random.RandomState, None] = None):
-        """Split this dataset into test and train subsets, in a stratified manner
+        """Split this dataset into test and train subsets, in a stratified manner.
 
-        Parameters:
-        test_size (int): percentage of data to be used in the test subset, `1 - test_size` will be used for the train subset
-        seed (int|RandomState|None): when shuffle is True, affects the ordering of samples
+        Args:
+            test_size (int): percentage of data to be used in the test subset, `1 - test_size` will be used for the train subset
+            seed (int|RandomState|None): when shuffle is True, affects the ordering of samples
 
         Returns:
-        Tuple[MoseqRepresentations, MoseqRepresentations] - train and test subsets, respectively
+            Tuple[MoseqRepresentations, MoseqRepresentations] - train and test subsets, respectively
         """
         train_idx, test_idx, train_groups, test_groups = model_selection.train_test_split(
             np.arange(self.n_samples), self.groups, test_size=test_size, stratify=self.groups, shuffle=True, random_state=seed
@@ -155,18 +156,18 @@ def load_representations(
     exclude_uuids: List[str] = None,
     prune_trans: bool = True,
 ) -> MoseqRepresentations:
-    """Load representations of moseq data
+    """Load representations of moseq data.
 
-    Parameters:
-    index_file (str): path to the moseq index file
-    model_file (str): path to the moseq model file
-    max_syllable (int): maximum syllable id to consider
-    groups (List[str]|None): if None, consider all groups in the model, otherwise restrict output to only these groups
-    exclude_uuids (List[str]|None): if None, consider all samples in the model, otherwise, exclude samples with these uuids
-    prune_trans (bool): if True, prune transitions in which all groups have a value of zero, otherwise consider all transitions
+    Args:
+        index_file (str): path to the moseq index file
+        model_file (str): path to the moseq model file
+        max_syllable (int): maximum syllable id to consider
+        groups (List[str]|None): if None, consider all groups in the model, otherwise restrict output to only these groups
+        exclude_uuids (List[str]|None): if None, consider all samples in the model, otherwise, exclude samples with these uuids
+        prune_trans (bool): if True, prune transitions in which all groups have a value of zero, otherwise consider all transitions
 
     Returns:
-    MoseqRepresentations - representations of moseq data
+        MoseqRepresentations - representations of moseq data
     """
     _, sorted_index = parse_index(index_file)
     model = parse_model_results(model_file, sort_labels_by_usage=True, count="usage")
@@ -227,14 +228,14 @@ def load_representations(
 
 
 def load_groups(index_file: str, custom_groupings: List[str] = None) -> Dict[str, str]:
-    """Load available groups from a moseq2 index file, and return a map from origional group to (possibly custom) group
+    """Load available groups from a moseq2 index file, and return a map from origional group to (possibly custom) group.
 
-    Parameters:
-    index_file (str): path to the moseq index file
-    custom_groupings (List[str]): list of custom groupings, multiple subgroups should be comma separated
+    Args:
+        index_file (str): path to the moseq index file
+        custom_groupings (List[str]): list of custom groupings, multiple subgroups should be comma separated
 
     Returns:
-    Dict[str, str] - mapping of origional groups to possibly custom groups
+        Dict[str, str] - mapping of origional groups to possibly custom groups
     """
     # Get group names available in model
     _, sorted_index = parse_index(index_file)

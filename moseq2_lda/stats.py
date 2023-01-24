@@ -1,8 +1,10 @@
+"""Module contains statistical routines."""
 from scipy import stats
 import numpy as np
 
 
 def compute_kde(data, mask, a1, a2, extents, res=100j):
+    """Compute a 2D KDE."""
     if extents is None:
         xx, yy = np.mgrid[np.min(data.T[a1]) : np.max(data.T[a1]) : res, np.min(data.T[a2]) : np.max(data.T[a2]) : res]
     else:
@@ -16,6 +18,7 @@ def compute_kde(data, mask, a1, a2, extents, res=100j):
 
 
 def compute_3D_kde(data, mask, extents, res=100j):
+    """Compute a 3D KDE."""
     if extents is None:
         xx, yy, zz = np.mgrid[
             np.min(data.T[0]) : np.max(data.T[0]) : res,
