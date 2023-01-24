@@ -45,7 +45,7 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v3.0.2
       with:
-        path: moseq2-lda
+        path: ./repos/lda
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -57,25 +57,27 @@ jobs:
       with:
         repository: tischfieldlab/moseq2-viz
         token: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
-        path: moseq2-viz
+        path: ./repos/viz
 
     - name: Install dependencies
       run: |
-        pip install -e moseq2-viz
-        pip install --editable moseq2-lda[dev]
+        pip install --editable ./repos/viz
+        pip install --editable ./repos/lda[dev]
 
     - name: Run Black
+      working-directory: ./repos/lda
       run: |
-        black --check moseq2-lda/moseq2_lda tests
+        black --check moseq2_lda tests
 
     - name: Run pydocstyle
+      working-directory: ./repos/lda
       run: |
-        pydocstyle --convention=google moseq2-lda/moseq2_lda/
+        pydocstyle --convention=google moseq2_lda
 
     - name: Run MyPy
-      working-directory: moseq2-lda
+      working-directory: ./repos/lda
       run: |
-        mypy --follow-imports=skip --ignore-missing-imports moseq2-lda/moseq2_lda moseq2-lda/tests
+        mypy --follow-imports=skip --ignore-missing-imports moseq2_lda tests
 
   # # Tests with pytest
   # tests:
