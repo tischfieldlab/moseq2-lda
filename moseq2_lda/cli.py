@@ -25,6 +25,7 @@ def cli():
 @cli.command(name='create-notebook', help='Create a new jupyter notebook from a template')
 @click.argument('dest', required=True, type=click.Path(exists=False))
 def create_notebook(dest):
+    '''WARNING: Not yet implemented!'''
     pass
 
 
@@ -39,6 +40,8 @@ def create_notebook(dest):
 @click.option('--dest-dir', type=click.Path(), help='Directory where results will be saved')
 @click.option('--name', type=str, default='moseq-lda-analysis', help='basename prefix of output files')
 def cross_validate(model_file, index_file, max_syllable, group, representation, holdout, dim, dest_dir, name):
+    '''Run a cross-validated hyperparameter search for the LDA parameter `shrinkage`.
+    '''
     # make sure destination directory exists
     os.makedirs(dest_dir, exist_ok=True)
     name = f'{name}.{representation}'
@@ -149,7 +152,22 @@ def analyze(model_file, index_file, max_syllable, group, representation, holdout
 @click.option('--dest-dir', type=click.Path(), help='Directory where results will be saved')
 @click.option('--name', type=str, default='moseq-lda-analysis', help='basename prefix of output files')
 def train(model_file, index_file, max_syllable, group, representation, holdout, dim, shrinkage, dest_dir, name):
+    ''' Train a single LDA model
 
+    \b
+    This command will train a single LDA model
+    - split the representations into `test` and `train` subsets
+    - creates an LDA estimator, trained on the `train` subset
+    - predict on the held-out `test` subsets and print a classification report
+
+    \b
+    Outputs:
+    - Pickled `LDAResult` suitable for later loading via `LDAResult.load()`
+    - Plot of LDA results (projections, confusion matrix, table of projections) against
+        all data using the model
+    - Perform and plot permutation test with the  \model
+    - Classification reports for `test`, `train`, `all` data subsets
+    '''
     if not shrinkage == "auto":
         shrinkage = float(shrinkage)
 
