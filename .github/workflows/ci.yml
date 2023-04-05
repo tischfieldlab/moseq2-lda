@@ -67,7 +67,7 @@ jobs:
     - name: Run Black
       working-directory: ./repos/lda
       run: |
-        black --check moseq2_lda tests
+        black --check --diff moseq2_lda tests
 
     - name: Run pydocstyle
       working-directory: ./repos/lda
