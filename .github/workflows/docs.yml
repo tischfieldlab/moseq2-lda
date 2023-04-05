@@ -27,10 +27,14 @@ jobs:
         pip install --editable ./repos/viz
         pip install --editable ./repos/lda[dev]
 
+    #- name: Build HTML
+    #  uses: ammaraskar/sphinx-action@master
+    #  with:
+    #    docs-folder: ./repos/lda/docs
+
     - name: Build HTML
-      uses: ammaraskar/sphinx-action@master
-      with:
-        docs-folder: ./repos/lda/docs
+      run: |
+        sphinx-build -b html docs/source/ docs/build/html
   
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
