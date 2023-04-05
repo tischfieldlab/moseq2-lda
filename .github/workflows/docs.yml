@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        path: ./repos/lda
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -27,16 +29,18 @@ jobs:
 
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
+      with:
+        path: ./repos/lda
   
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: html-docs
-        path: docs/build/html/
+        path: ./repos/lda/docs/build/html/
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/build/html
+        publish_dir: ./repos/lda/docs/build/html
