@@ -198,7 +198,6 @@ def load_representations(
 
     for labs, grp, u in tqdm(list(zip(labels, label_group, model["keys"])), leave=False, disable=True):
         if (grp in group_map.keys()) and (u not in exclude_uuids):
-
             meta = sorted_index["files"][u]["metadata"].copy()
             for key_to_remove in meta_keys_to_ignore:
                 meta.pop(key_to_remove, None)
