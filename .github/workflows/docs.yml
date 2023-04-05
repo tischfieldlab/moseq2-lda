@@ -1,0 +1,50 @@
+name: Docs Build
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: ./repos/lda
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Checkout Viz
+      uses: actions/checkout@v2
+      with:
+        repository: tischfieldlab/moseq2-viz
+        token: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
+        path: ./repos/viz
+
+    - name: Install dependencies
+      run: |
+        pip install --editable ./repos/viz
+        pip install --editable ./repos/lda[dev]
+
+    #- name: Build HTML
+    #  uses: ammaraskar/sphinx-action@master
+    #  with:
+    #    docs-folder: ./repos/lda/docs
+
+    - name: Build HTML
+      run: |
+        sphinx-build -b html ./repos/lda/docs/source/ ./repos/lda/docs/build/html
+  
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-docs
+        path: ./repos/lda/docs/build/html/
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./repos/lda/docs/build/html
