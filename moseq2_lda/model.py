@@ -307,11 +307,12 @@ def train_lda_pipeline(
     """This is a "batteries-included" method to train an LDA model.
 
     Performs the following procedure:
+
     - split the representations into `test` and `train` subsets
     - creates an LDA estimator
-    - run a cross-validated search (k-fold stratified CV) for the hyperparameter `shrinkage` using
+    - run a cross-validated search (k-fold stratified CV) for the hyperparameter `shrinkage` using \
       only the `train` subset of the representations
-    - select the best hyperparameter value from the search, and then train the classifier using
+    - select the best hyperparameter value from the search, and then train the classifier using \
       the full `train` subset of the representations
     - predict on the held-out `test` subsets and print a classification report
     - construct and return a `LdaPipelineResult` object
