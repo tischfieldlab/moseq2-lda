@@ -8,6 +8,23 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Checkout Viz
+      uses: actions/checkout@v2
+      with:
+        repository: tischfieldlab/moseq2-viz
+        token: ${{ secrets.SERVICE_ACCOUNT_TOKEN }}
+        path: ./repos/viz
+
+    - name: Install dependencies
+      run: |
+        pip install --editable ./repos/viz
+        pip install --editable ./repos/lda[dev]
+
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
   
