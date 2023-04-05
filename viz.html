@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualization &mdash; moseq2-lda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Modelling" href="model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            moseq2-lda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Setup</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Modelling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.viz.viz.Aesthetics"><code class="docutils literal notranslate"><span class="pre">Aesthetics</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.viz.viz.plot_lda_results"><code class="docutils literal notranslate"><span class="pre">plot_lda_results()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.viz.viz.plot_permutation_score"><code class="docutils literal notranslate"><span class="pre">plot_permutation_score()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.viz.viz.plot_validation_curve"><code class="docutils literal notranslate"><span class="pre">plot_validation_curve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">moseq2-lda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Visualization</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/viz.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-moseq2_lda.viz.viz">
+<span id="visualization"></span><h1>Visualization<a class="headerlink" href="#module-moseq2_lda.viz.viz" title="Permalink to this heading"></a></h1>
+<p>Module contains functions for visualizations of LDA models.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="moseq2_lda.viz.viz.Aesthetics">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moseq2_lda.viz.viz.</span></span><span class="sig-name descname"><span class="pre">Aesthetics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/moseq2_lda/viz/viz.html#Aesthetics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.viz.viz.Aesthetics" title="Permalink to this definition"></a></dt>
+<dd><p>Encapsulates aesthetic information used for plotting.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moseq2_lda.viz.viz.plot_lda_results">
+<span class="sig-prename descclassname"><span class="pre">moseq2_lda.viz.viz.</span></span><span class="sig-name descname"><span class="pre">plot_lda_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult" title="moseq2_lda.model.LdaResult"><span class="pre">LdaResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations" title="moseq2_lda.data.MoseqRepresentations"><span class="pre">MoseqRepresentations</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">aes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#moseq2_lda.viz.viz.Aesthetics" title="moseq2_lda.viz.viz.Aesthetics"><span class="pre">Aesthetics</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'LDA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(25,</span> <span class="pre">20)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/moseq2_lda/viz/viz.html#plot_lda_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.viz.viz.plot_lda_results" title="Permalink to this definition"></a></dt>
+<dd><p>Plot, in several aspects, an <cite>LdaResult</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lda</strong> (<a class="reference internal" href="model.html#moseq2_lda.model.LdaResult" title="moseq2_lda.model.LdaResult"><em>LdaResult</em></a>) – LdaResult to plot</p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations" title="moseq2_lda.data.MoseqRepresentations"><em>MoseqRepresentations</em></a>) – data to plot</p></li>
+<li><p><strong>aes</strong> (<a class="reference internal" href="#moseq2_lda.viz.viz.Aesthetics" title="moseq2_lda.viz.viz.Aesthetics"><em>Aesthetics</em></a>) – Aesthetic information for plots</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Title for plot</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – size of the figure</p></li>
+<li><p><strong>relative_weights</strong> – relative weights</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moseq2_lda.viz.viz.plot_permutation_score">
+<span class="sig-prename descclassname"><span class="pre">moseq2_lda.viz.viz.</span></span><span class="sig-name descname"><span class="pre">plot_permutation_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_permutations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/moseq2_lda/viz/viz.html#plot_permutation_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.viz.viz.plot_permutation_score" title="Permalink to this definition"></a></dt>
+<dd><p>Compute and plot the results of a permutation test on an LDA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lda</strong> (<em>LinearDiscriminantAnalysis</em>) – LDA model to test</p></li>
+<li><p><strong>X</strong> – data to use for test</p></li>
+<li><p><strong>y</strong> – labels to use for test</p></li>
+<li><p><strong>cv</strong> – cross-validation generator</p></li>
+<li><p><strong>n_permutations</strong> – number of permutations to generate</p></li>
+<li><p><strong>ax</strong> – if not None, use this matplotlib axis for plotting, otherwise will create a new figure and axis</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moseq2_lda.viz.viz.plot_validation_curve">
+<span class="sig-prename descclassname"><span class="pre">moseq2_lda.viz.viz.</span></span><span class="sig-name descname"><span class="pre">plot_validation_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cv_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult" title="moseq2_lda.model.CrossValidationResult"><span class="pre">CrossValidationResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/moseq2_lda/viz/viz.html#plot_validation_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.viz.viz.plot_validation_curve" title="Permalink to this definition"></a></dt>
+<dd><p>Plot a Validation Curve for a <cite>CrossValidationResult</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cv_result</strong> – CrossValidationResult to plot</p></li>
+<li><p><strong>ax</strong> – if not None, use this matplotlib axis for plotting, otherwise will create a new figure and axis</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model.html" class="btn btn-neutral float-left" title="Modelling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Joshua K. Thackray.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

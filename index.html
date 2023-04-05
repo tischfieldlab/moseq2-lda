@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to moseq2-lda! &mdash; moseq2-lda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            moseq2-lda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Setup</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="viz.html">Visualization</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">moseq2-lda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to moseq2-lda!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-moseq2-lda">
+<h1>Welcome to moseq2-lda!<a class="headerlink" href="#welcome-to-moseq2-lda" title="Permalink to this heading"></a></h1>
+<p>A framework for LDA analysis of moseq data.
+This package gathers some common methods and formalizes a framework for rapid execution of LDA analysis with moseq data.</p>
+<div class="toctree-wrapper compound">
+</div>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Code relies on <cite>moseq2-viz</cite>. Please be sure to install this dependency prior to installing this library.</p></li>
+<li><p>Specific version of <cite>scikit-learn</cite> is important. This library currently prefers a newer version of scikit-learn than moseq2-viz prefers (0.20.3), but we prefer &gt;= 0.22.3.</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.classes"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.classes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.data"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.describe"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.describe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.frames"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.frames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.groups"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.groups</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.meta"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.n_samples"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.n_samples</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.split"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.usages"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.usages</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqRepresentations.uuids"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.uuids</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqSampleMetadata"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqSampleMetadata.SessionName"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.SessionName</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqSampleMetadata.StartTime"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.StartTime</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqSampleMetadata.SubjectName"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.SubjectName</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqSampleMetadata.group"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.group</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#moseq2_lda.data.MoseqSampleMetadata.uuid"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.uuid</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#moseq2_lda.data.load_groups"><code class="docutils literal notranslate"><span class="pre">load_groups()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#moseq2_lda.data.load_representations"><code class="docutils literal notranslate"><span class="pre">load_representations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Modelling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.base_estimator"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.base_estimator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.best"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.best</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.estimators"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.estimators</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.fit_times"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.fit_times</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.load"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.model_info"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.model_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.param_max"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.param_max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.param_min"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.param_min</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.param_name"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.param_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.param_range"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.param_range</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.param_values"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.param_values</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.save"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.score_times"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.score_times</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.scoring"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.scoring</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.test_scores"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.test_scores</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.test_scores_mean"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.test_scores_mean</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.test_scores_std"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.test_scores_std</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.train_scores"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.train_scores</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.train_scores_mean"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.train_scores_mean</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.train_scores_std"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.train_scores_std</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.CrossValidationResult.worst"><code class="docutils literal notranslate"><span class="pre">CrossValidationResult.worst</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.LdaPipelineResult"><code class="docutils literal notranslate"><span class="pre">LdaPipelineResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaPipelineResult.load"><code class="docutils literal notranslate"><span class="pre">LdaPipelineResult.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaPipelineResult.save"><code class="docutils literal notranslate"><span class="pre">LdaPipelineResult.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult"><code class="docutils literal notranslate"><span class="pre">LdaResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult.classification_report"><code class="docutils literal notranslate"><span class="pre">LdaResult.classification_report()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult.lda"><code class="docutils literal notranslate"><span class="pre">LdaResult.lda</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult.load"><code class="docutils literal notranslate"><span class="pre">LdaResult.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult.predict"><code class="docutils literal notranslate"><span class="pre">LdaResult.predict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult.save"><code class="docutils literal notranslate"><span class="pre">LdaResult.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult.score"><code class="docutils literal notranslate"><span class="pre">LdaResult.score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="model.html#moseq2_lda.model.LdaResult.transform"><code class="docutils literal notranslate"><span class="pre">LdaResult.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.create_lda_pipeline"><code class="docutils literal notranslate"><span class="pre">create_lda_pipeline()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.run_cross_validation"><code class="docutils literal notranslate"><span class="pre">run_cross_validation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.set_estimator_params"><code class="docutils literal notranslate"><span class="pre">set_estimator_params()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.train_lda_model"><code class="docutils literal notranslate"><span class="pre">train_lda_model()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html#moseq2_lda.model.train_lda_pipeline"><code class="docutils literal notranslate"><span class="pre">train_lda_pipeline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="viz.html">Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="viz.html#moseq2_lda.viz.viz.Aesthetics"><code class="docutils literal notranslate"><span class="pre">Aesthetics</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="viz.html#moseq2_lda.viz.viz.plot_lda_results"><code class="docutils literal notranslate"><span class="pre">plot_lda_results()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="viz.html#moseq2_lda.viz.viz.plot_permutation_score"><code class="docutils literal notranslate"><span class="pre">plot_permutation_score()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="viz.html#moseq2_lda.viz.viz.plot_validation_curve"><code class="docutils literal notranslate"><span class="pre">plot_validation_curve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Joshua K. Thackray.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

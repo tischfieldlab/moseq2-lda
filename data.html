@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data &mdash; moseq2-lda 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modelling" href="model.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            moseq2-lda
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Setup</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.classes"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.classes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.data"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.describe"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.describe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.frames"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.frames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.groups"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.groups</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.meta"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.meta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.n_samples"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.n_samples</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.split"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.usages"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.usages</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations.uuids"><code class="docutils literal notranslate"><span class="pre">MoseqRepresentations.uuids</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata.SessionName"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.SessionName</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata.StartTime"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.StartTime</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata.SubjectName"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.SubjectName</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata.group"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.group</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata.uuid"><code class="docutils literal notranslate"><span class="pre">MoseqSampleMetadata.uuid</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.data.load_groups"><code class="docutils literal notranslate"><span class="pre">load_groups()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moseq2_lda.data.load_representations"><code class="docutils literal notranslate"><span class="pre">load_representations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Modelling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="viz.html">Visualization</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">moseq2-lda</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/data.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-moseq2_lda.data">
+<span id="data"></span><h1>Data<a class="headerlink" href="#module-moseq2_lda.data" title="Permalink to this heading"></a></h1>
+<p>Module contains classes and functions for loading and storing moseq data.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moseq2_lda.data.</span></span><span class="sig-name descname"><span class="pre">MoseqRepresentations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata" title="moseq2_lda.data.MoseqSampleMetadata"><span class="pre">MoseqSampleMetadata</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/moseq2_lda/data.html#MoseqRepresentations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations" title="Permalink to this definition"></a></dt>
+<dd><p>Contains various representations of moseq data.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.classes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">classes</span></span><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.classes" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the unique set of group labels in the dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">representation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'usages'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'frames'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'trans'</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/moseq2_lda/data.html#MoseqRepresentations.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.data" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the data for a given representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>representation</strong> (<em>RepresentationType</em>) – Type of representation to yield</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray - numpy array containing data of the requested representation type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/moseq2_lda/data.html#MoseqRepresentations.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.describe" title="Permalink to this definition"></a></dt>
+<dd><p>Describe the data within this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>as_str</strong> (<em>bool</em>) – if True, return the description as a string, otherwise print to stdout</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None if <cite>as_str</cite> is False, otherwise the description as a string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.frames">
+<span class="sig-name descname"><span class="pre">frames</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.frames" title="Permalink to this definition"></a></dt>
+<dd><p>Transitions (bigram normalized transition probabilities), of shape (nsamples, ntransitions)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">groups</span></span><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.groups" title="Permalink to this definition"></a></dt>
+<dd><p>Gets an array of group labels for each sample in the dataset.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.meta">
+<span class="sig-name descname"><span class="pre">meta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#moseq2_lda.data.MoseqSampleMetadata" title="moseq2_lda.data.MoseqSampleMetadata"><span class="pre">MoseqSampleMetadata</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.meta" title="Permalink to this definition"></a></dt>
+<dd><p>Usages representation (relative emission rates), of shape (nsamples, nmodules)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.n_samples">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_samples</span></span><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.n_samples" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the number of samples in this dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.split">
+<span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">RandomState</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/moseq2_lda/data.html#MoseqRepresentations.split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.split" title="Permalink to this definition"></a></dt>
+<dd><p>Split this dataset into test and train subsets, in a stratified manner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test_size</strong> (<em>int</em>) – percentage of data to be used in the test subset, <cite>1 - test_size</cite> will be used for the train subset</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>|</em><em>RandomState</em><em>|</em><em>None</em>) – when shuffle is True, affects the ordering of samples</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple[MoseqRepresentations, MoseqRepresentations] - train and test subsets, respectively</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.usages">
+<span class="sig-name descname"><span class="pre">usages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.usages" title="Permalink to this definition"></a></dt>
+<dd><p>frames representation (relative frame counts), of shape (nsamples, nmodules)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqRepresentations.uuids">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uuids</span></span><a class="headerlink" href="#moseq2_lda.data.MoseqRepresentations.uuids" title="Permalink to this definition"></a></dt>
+<dd><p>Gets an array of uuids for each sample in the dataset.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqSampleMetadata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moseq2_lda.data.</span></span><span class="sig-name descname"><span class="pre">MoseqSampleMetadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SessionName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SubjectName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">StartTime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ApparatusName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'unknown'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/moseq2_lda/data.html#MoseqSampleMetadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.data.MoseqSampleMetadata" title="Permalink to this definition"></a></dt>
+<dd><p>Dataclass storing metadata for a single sample.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqSampleMetadata.SessionName">
+<span class="sig-name descname"><span class="pre">SessionName</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#moseq2_lda.data.MoseqSampleMetadata.SessionName" title="Permalink to this definition"></a></dt>
+<dd><p>Subject Name given to this sample</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqSampleMetadata.StartTime">
+<span class="sig-name descname"><span class="pre">StartTime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#moseq2_lda.data.MoseqSampleMetadata.StartTime" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the apparatus in which this sample’s raw data was collected</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqSampleMetadata.SubjectName">
+<span class="sig-name descname"><span class="pre">SubjectName</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#moseq2_lda.data.MoseqSampleMetadata.SubjectName" title="Permalink to this definition"></a></dt>
+<dd><p>Date and time at which this sample’s raw data was collected</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqSampleMetadata.group">
+<span class="sig-name descname"><span class="pre">group</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#moseq2_lda.data.MoseqSampleMetadata.group" title="Permalink to this definition"></a></dt>
+<dd><p>Session Name given to this sample</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moseq2_lda.data.MoseqSampleMetadata.uuid">
+<span class="sig-name descname"><span class="pre">uuid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#moseq2_lda.data.MoseqSampleMetadata.uuid" title="Permalink to this definition"></a></dt>
+<dd><p>Group to which this sample belongs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moseq2_lda.data.load_groups">
+<span class="sig-prename descclassname"><span class="pre">moseq2_lda.data.</span></span><span class="sig-name descname"><span class="pre">load_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_groupings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/moseq2_lda/data.html#load_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.data.load_groups" title="Permalink to this definition"></a></dt>
+<dd><p>Load available groups from a moseq2 index file, and return a map from origional group to (possibly custom) group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_file</strong> (<em>str</em>) – path to the moseq index file</p></li>
+<li><p><strong>custom_groupings</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – list of custom groupings, multiple subgroups should be comma separated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dict[str, str] - mapping of origional groups to possibly custom groups</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moseq2_lda.data.load_representations">
+<span class="sig-prename descclassname"><span class="pre">moseq2_lda.data.</span></span><span class="sig-name descname"><span class="pre">load_representations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_syllable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_uuids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prune_trans</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#moseq2_lda.data.MoseqRepresentations" title="moseq2_lda.data.MoseqRepresentations"><span class="pre">MoseqRepresentations</span></a></span></span><a class="reference internal" href="_modules/moseq2_lda/data.html#load_representations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moseq2_lda.data.load_representations" title="Permalink to this definition"></a></dt>
+<dd><p>Load representations of moseq data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_file</strong> (<em>str</em>) – path to the moseq index file</p></li>
+<li><p><strong>model_file</strong> (<em>str</em>) – path to the moseq model file</p></li>
+<li><p><strong>max_syllable</strong> (<em>int</em>) – maximum syllable id to consider</p></li>
+<li><p><strong>groups</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>|</em><em>None</em>) – if None, consider all groups in the model, otherwise restrict output to only these groups</p></li>
+<li><p><strong>exclude_uuids</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>|</em><em>None</em>) – if None, consider all samples in the model, otherwise, exclude samples with these uuids</p></li>
+<li><p><strong>prune_trans</strong> (<em>bool</em>) – if True, prune transitions in which all groups have a value of zero, otherwise consider all transitions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>MoseqRepresentations - representations of moseq data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model.html" class="btn btn-neutral float-right" title="Modelling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Joshua K. Thackray.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
