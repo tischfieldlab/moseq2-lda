@@ -7,7 +7,8 @@ Code relies on `moseq2-viz`. Please be sure to install this dependency prior to 
 
 Specific version of `scikit-learn` is important. This library currently prefers a newer version of scikit-learn than moseq2-viz prefers (0.20.3), but we prefer >= 0.22.3.
 
-## Usage
+## Notebook Usage
+This section describes how to use this package in a interactive notebook environment, or otherwise how to utilize the API in your own application.
 
 ### Load data
 First step is to load data from a moseq model file and an index file.
@@ -69,3 +70,57 @@ from moseq2_lda.viz import plot_lda_results
 fig, axs, df = plot_lda_results(results.estimator, representations.usage, representations.meta, representations.groups, groups, palette, markers, title='LDA Usages')
 ```
 ![LDA Visualization](img/LDA_viz.png)
+
+
+## CLI Usage
+This section describes how to use this package on the command line interface.
+
+### Available Commands
+You can check the commands available on the command line by passing the `--help` flag to `moseq2-lda`.
+```
+> moseq2-lda --help
+Usage: moseq2-lda [OPTIONS] COMMAND [ARGS]...
+
+  Toolbox for training and using scikit-learn Linear Discriminant Analysis
+  (LDA) models for analysis of moseq data.
+
+Options:
+  --version  Show the version and exit.  [default: False]
+  --help     Show this message and exit.  [default: False]
+
+Commands:
+  analyze          Run default analysis pipeline
+  cross-validate   Run hyperparameter search
+  train            Train a single LDA model
+```
+For each command, you can find specific arguments by passing the `--help` flag to `moseq2-lda <command> --help`.
+
+### Analyze Command
+This is a "batteries-included" method which performs the following procedure:
+- Split the representations into `test` and `train` subsets.
+- Creates an LDA estimator.
+- Runs a cross-validated search (k-fold stratified CV) for the hyperparameter `shrinkage` using only the `train` subset of the representations.
+- Select the best hyperparameter value from the search, and then train a classifier using the selected hyperparameter value against the full `train` subset of the representations.
+- Predict on the held-out `test` subsets and print a classification report.
+
+Here is an example invocation of the `analyze` command. This will construct an LDA analysis using usage data (normalized emission counts) and limit the analysis to only the groups `control` and `treatment`.
+```
+moseq2-lda analyze /path/to/model.p /path/to/moseq2-index.yaml --representation usages --group control --group treatment --max-syllable 46 --name "my-lda-experiment"
+```
+
+Running the above command will produce the following set of files as output:
+| Filename | Description |
+| -------- | ----------- |
+| my-lda-experiment.usages.validation-curve.[png\|pdf] | Plot of the cross-validated hyperparameter search results |
+| my-lda-experiment.usages.lda-results.[png\|pdf] | Plot of LDA results (projections, confusion matrix, table of projections) against all data using final model trained from CV |
+| my-lda-experiment.usages.lda-results.tsv | Tab-separated values file (load in excel) containing, for each sample, the projected coordinates in LDA space and the predicted class. |
+| my-lda-experiment.usages.lda_pipeline_results.p | Pickled `LDAPipelineResult` suitable for later loading via `LDAPipelineResult.load()` |
+| my-lda-experiment.usages.performance_final-model_all-data.txt | Classification report using all data |
+| my-lda-experiment.usages.performance_final-model_held-out-data.txt | Classification report using only held-out data |
+| my-lda-experiment.usages.performance_final-model_training-data.txt | Classification report using only training data |
+| my-lda-experiment.usages.permutation-test.[png\|pdf] | Plot of permutation test results with the final model |
+
+These files generally have the following structure in their filenames (`--` indicates a parameter given on the command line):
+```
+<--name>.<--representation>.<analysis aspect>.<extension>
+```
