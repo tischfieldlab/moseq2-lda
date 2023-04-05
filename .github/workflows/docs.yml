@@ -30,7 +30,7 @@ jobs:
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
       with:
-        path: ./repos/lda
+        docs-folder: ./repos/lda/docs
   
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
