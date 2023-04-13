@@ -7,6 +7,7 @@ from moseq2_lda.util import dict_merge
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import seaborn as sns
 import matplotlib as mpl
+from moseq2_lda.viz.common import plot_lda_confusion_matrix
 
 from moseq2_lda.viz.viz import Aesthetics
 
@@ -125,22 +126,6 @@ def plot_lda_projection(lda_transformed, group_vals, groups, palette, markers, t
     ax.set_xlabel("LDA_1")
     ax.set_ylabel("LDA_2")
     ax.set_title(title)
-
-    return ax
-
-
-def plot_lda_confusion_matrix(lda_predictions, group_vals, groups, ax=None):
-    """Plot a confusion matrix for LDA classifications."""
-    if ax is None:
-        fig, ax = plt.subplots(1, 1)
-
-    confusion = confusion_matrix(y_true=group_vals, y_pred=lda_predictions, normalize="true", labels=groups)
-    sns.heatmap(
-        confusion, ax=ax, xticklabels=groups, yticklabels=groups, cbar_kws={"label": "Row Normalized Confusion"}, vmin=0, vmax=1, annot=True
-    )
-    ax.set_xlabel("Predicted Label")
-    ax.set_ylabel("True Label")
-    ax.set_title("LDA Classification Confusion Matrix")
 
     return ax
 
