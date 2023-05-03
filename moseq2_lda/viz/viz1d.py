@@ -12,9 +12,6 @@ from moseq2_lda.viz.common import plot_lda_confusion_matrix
 from moseq2_lda.viz.viz import Aesthetics
 
 
-
-
-
 # style:Literal['kde', 'centroid']
 def plot_lda_projection(lda_transformed, group_vals, groups, palette, markers, title="LDA", ax=None, style=None):
     """Plot a projection of the LDA data."""
@@ -83,7 +80,6 @@ def plot_lda_projection(lda_transformed, group_vals, groups, palette, markers, t
         ax.set_ylabel("LDA_1")
         ax.set_xlabel("Group")
 
-
     ax.set_title(title)
 
     return ax
@@ -145,6 +141,6 @@ def plot_lda_results_1D(
 
     plot_lda_confusion_matrix(lda_predictions, group_vals, aes.groups, ax=axs[1, 0])
 
-    #plot_lda_scalings(lda, ax=axs[1, 1])
+    # plot_lda_scalings(lda, ax=axs[1, 1])
 
     return fig, axs
