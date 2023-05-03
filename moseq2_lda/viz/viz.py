@@ -5,6 +5,7 @@ from typing import ClassVar, List, Optional, Tuple
 import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix
 from moseq2_lda.data import MoseqRepresentations
 from moseq2_lda.model import CrossValidationResult, LdaResult
 from sklearn.model_selection import permutation_test_score
@@ -117,12 +118,20 @@ def plot_lda_results(
         )
     out_data = pd.DataFrame(out_data)
 
-    if lda.lda.n_components == 2:
+    if lda.lda.n_components == 1:
+        from .viz1d import plot_lda_results_1D
+
+        fig, axs = plot_lda_results_1D(
+            lda.lda, lda_result, lda_predictions, data.groups, aes=aes, title=title, figsize=figsize, relative_weights=relative_weights
+        )
+
+    elif lda.lda.n_components == 2:
         from .viz2d import plot_lda_results_2D
 
         fig, axs = plot_lda_results_2D(
             lda.lda, lda_result, lda_predictions, data.groups, aes=aes, title=title, figsize=figsize, relative_weights=relative_weights
         )
+
     elif lda.lda.n_components == 3:
         from .viz3d import plot_lda_kde_projections_3D, plot_lda_results_3D
 
@@ -130,8 +139,9 @@ def plot_lda_results(
             lda.lda, lda_result, lda_predictions, data.groups, aes=aes, title=title, figsize=figsize, relative_weights=relative_weights
         )
         plot_lda_kde_projections_3D(axs, lda_result, data.groups, aes=aes)
+
     else:
-        raise ValueError(f"unsupported `n_components` of {lda.lda.n_components}; only 2-3 components allowed!")
+        raise ValueError(f"unsupported `n_components` of {lda.lda.n_components}; only 1-3 components allowed!")
 
     return fig, axs, out_data
 
