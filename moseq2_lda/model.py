@@ -27,7 +27,7 @@ def create_lda_pipeline(**kwargs) -> LDAEstimator:
     return Pipeline(
         [
             # ('scalar', StandardScaler()),
-            ("passthrough", "passthrough"),
+            # ("passthrough", "passthrough"),
             ("lda", LinearDiscriminantAnalysis(n_components=n_components, solver="eigen", store_covariance=True, **kwargs)),
         ]
     )
